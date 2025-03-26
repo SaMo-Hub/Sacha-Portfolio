@@ -18,6 +18,7 @@ export const FileExplorer = () => {
   const [newItemName, setNewItemName] = useState("");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [itemType, setItemType] = useState("file");
+  const [current, setCurrent] = useState(fileSystem.root);
 
   const handleCreateItem = () => {
     if (!newItemName.trim()) return;
@@ -35,32 +36,39 @@ export const FileExplorer = () => {
   }
 
 
-  const currentContent = useMemo(() => {
+  useEffect(() => {
+    if (!fileSystem.root || !currentPath) return;
     
-    if (!fileSystem.root || !currentPath) return null;
-
-
-    let current = fileSystem.root;
-    const pathParts = currentPath.name
-      .split("/")
-      .filter((p) => p !== "C:" && p !== "");
-
+    if(current.name=="C:") {
+      setCurrent(fileSystem.root)
+      console.log(current,fileSystem.root);
+    } else {
+    
+    let tempCurrent = current;
+    const pathParts = currentPath.name.split("/").filter((p) => p !== "C:" && p !== "");
 
     for (const part of pathParts) {
-      if (!current.children) {
-        console.error("No children found for", current);
-        return null;
+      if (!tempCurrent.children || !tempCurrent.children[part]) {
+        console.error(`Part "${part}" not found in children of`, tempCurrent);
+        return;
       }
-      if (!current.children[part]) {
-        console.error(`Part "${part}" not found in children of`, current);
-        return null;
-      }
-      current = current.children[part];
+      tempCurrent = tempCurrent.children[part];
     }
 
+    setCurrent(tempCurrent);}
+  }, [fileSystem, currentPath,current]);
 
-    return current.children ? Object.values(current.children) : [];
-  }, [fileSystem, currentPath]);
+  const currentContent = useMemo(() => {
+    
+    return current?.children ? Object.values(current.children) : [];
+  }, [current]);
+  
+ const goBaaack = () => {
+  if (historyIndex > 0) {
+    setCurrent(pathHistory[historyIndex - 1]);
+  }
+  goBack()
+};
 
   return (
     <div className="flex flex-col h-full bg-[#008080] border-2 border-[#000080] shadow-[inset_0_0_0_1px_white,inset_2px_2px_0_#dfdfdf]">
@@ -72,7 +80,7 @@ export const FileExplorer = () => {
       {/* Barre d'outils */}
       <div className="flex items-center bg-[#c0c0c0] border-b border-[#808080] p-1 gap-1">
         <button
-          onClick={goBack}
+          onClick={goBaaack}
           disabled={historyIndex === 0}
           className="px-2 py-1 bg-[#c0c0c0] border border-[#808080] shadow-[inset_-1px_-1px_0_#000,inset_1px_1px_0_#dfdfdf] disabled:opacity-50"
         >
