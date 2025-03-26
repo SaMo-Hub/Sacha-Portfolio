@@ -18,7 +18,6 @@ export const FileExplorer = () => {
   const [newItemName, setNewItemName] = useState("");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [itemType, setItemType] = useState("file");
-  const [current, setCurrent] = useState(fileSystem.root);
 
   const handleCreateItem = () => {
     if (!newItemName.trim()) return;
@@ -36,29 +35,33 @@ export const FileExplorer = () => {
   }
 
 
-  useEffect(() => {
-    if (!fileSystem.root || !currentPath) return;
-
-    let tempCurrent = current;
-    const pathParts = currentPath.name.split("/").filter((p) => p !== "C:" && p !== "");
-
-    for (const part of pathParts) {
-      if (!tempCurrent.children || !tempCurrent.children[part]) {
-        console.error(`Part "${part}" not found in children of`, tempCurrent);
-        return;
-      }
-      tempCurrent = tempCurrent.children[part];
-    }
-
-    setCurrent(tempCurrent);
-  }, [fileSystem, currentPath]);
-
   const currentContent = useMemo(() => {
     
-    return current?.children ? Object.values(current.children) : [];
-  }, [current]);
-  console.log(history,currentContent,currentPath);
-  
+    if (!fileSystem.root || !currentPath) return null;
+
+
+    let current = fileSystem.root;
+    const pathParts = currentPath.name
+      .split("/")
+      .filter((p) => p !== "C:" && p !== "");
+
+
+    for (const part of pathParts) {
+      if (!current.children) {
+        console.error("No children found for", current);
+        return null;
+      }
+      if (!current.children[part]) {
+        console.error(`Part "${part}" not found in children of`, current);
+        return null;
+      }
+      current = current.children[part];
+    }
+
+
+    return current.children ? Object.values(current.children) : [];
+  }, [fileSystem, currentPath]);
+
   return (
     <div className="flex flex-col h-full bg-[#008080] border-2 border-[#000080] shadow-[inset_0_0_0_1px_white,inset_2px_2px_0_#dfdfdf]">
       {/* Barre de menu */}
