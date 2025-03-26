@@ -1,0 +1,17 @@
+.line {
+    margin-top: 50px;
+    height: 2px;
+    background: linear-gradient(to right, transparent 50%, #000000 50%), linear-gradient(to right, #ffffff, #ffffff);
+    background-size: 16px 2px, 100% 2px;
+  }
+.shadows{
+  opacity: 20%;
+  mix-blend-mode: overlay;
+  box-shadow: inset 2.0155254638171756px 2.0155254638171756px 1.9952684123670006px -.1875px #ffffff03, inset 4.777151241141837px 4.777151241141837px 4.729138452311175px -.375px #ffffff02, inset 8.714017655176574px 8.714017655176574px 8.626437365496516px -.5625px #ffffff02, inset 14.487036858627107px 14.487036858627107px 14.34143480284856px -.75px #ffffff02, inset 23.395383266347928px 23.395383266347928px 23.160247818530056px -.9375px #ffffff02, inset 38.29592112890677px 38.29592112890677px 37.91102773084922px -1.125px #ffffff02, inset 65.94299011604161px 65.94299011604161px 65.2802296758787px -1.3125px #ffffff03, inset 120px 120px 118.79393923933998px
+}
+
+.bgr{
+
+
+  background: linear-gradient(226deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .5) 100%);
+}

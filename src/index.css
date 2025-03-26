@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+  
+@font-face {
+    font-family: Mark;
+    src: url('/font/MarkPro.otf') format('opentype');
+  }
+@font-face {
+    font-family: Mark;
+    src: url('/font/MarkPro-Bold.otf') format('opentype');
+    font-weight: 900;
+  }
+@font-face {
+    font-family: Mark;
+    src: url('/font/MarkPro-Thin.otf') format('opentype');
+    font-weight: 300;
+  }
+@font-face {
+    font-family: Mark;
+    src: url('/font/MarkPro-Medium.otf') format('opentype');
+    font-weight: 500;
+  }
+  
+
+  
+  /* @font-face {
+    font-family: Mark;
+    src: url('../public/font/MarkPro.otf') format('opentype');
+  }
+@font-face {
+    font-family: Mark;
+    src: url('../public/font/MarkPro-Bold.otf') format('opentype');
+    font-weight: 900;
+  }
+@font-face {
+    font-family: Mark;
+    src: url('../public/font/MarkPro-Thin.otf') format('opentype');
+    font-weight: 300;
+  }
+@font-face {
+    font-family: Mark;
+    src: url('../public/font/MarkPro-Medium.otf') format('opentype');
+    font-weight: 500;
+  }
+   */
+   .masked-text {
+    mask: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 15.3505%) intersect, linear-gradient(rgb(0, 0, 0) 80.1714%, rgba(0, 0, 0, 0) 100%);
+  }
+.masked-stroke {
+    mask: linear-gradient(rgb(255, 255, 255) 0%, rgb(0, 0, 0) 15.3505%) intersect, linear-gradient(rgb(0, 0, 0) 80.1714%, rgba(0, 0, 0, 0) 100%);
+  }
+.masked-leftright {
+    mask:  linear-gradient(0.25turn, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 15.3505%) intersect, linear-gradient(rgb(0, 0, 0) 80.1714%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .swap {
+    font-display: swap;
+
+  }
+
+  
+  .line {
+    margin-top: 50px;
+    height: 2px;
+    background: linear-gradient(to right, transparent 50%, #000000 50%), linear-gradient(to right, #ffffff, #ffffff);
+    background-size: 16px 2px, 100% 2px;
+  }
+  
