@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
 import ReactLenis from 'lenis/react'
-import Test from './test';
-import Home from './Home';
+import { Desktop } from './components/Desktop/Desktop';
+import { FileExplorer } from './components/FileExplorer/FileExplorer';
+
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
 
         {/* Définition des routes */}
         <Routes>
-          <Route path="/" element={<Home />} /> {/* Home */}
+          <Route path="/" element={<FileExplorer />} /> {/* Home */}
         </Routes>
       </Router>
     </section>
