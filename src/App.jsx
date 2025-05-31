@@ -1,25 +1,29 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css'
-import ReactLenis from 'lenis/react'
-import { Desktop } from './components/Desktop/Desktop';
-import { FileExplorer } from './components/FileExplorer/FileExplorer';
-
+import { Routes, Route, useLocation } from "react-router-dom";
+import Home from "./Home/Home";
+import { AnimatePresence } from "framer-motion";
+import { PageProjet } from "./ProjetPage/PageProjet";
+import { Navbar } from "./components/Navbar";
 
 
 function App() {
+  const location = useLocation();
 
- return (
-    <section className="items-center text-white bg-black ">
-      <Router>
-        {/* Navbar pour naviguer */}
+  return (
+    <div className=" ">
+      <>
+        {/* <ScrollToTop/> */}
 
-        {/* Définition des routes */}
-        <Routes>
-          <Route path="/" element={<FileExplorer />} /> {/* Home */}
-        </Routes>
-      </Router>
-    </section>
+        <AnimatePresence mode="wait">
+          {/* <ScrollToHashElement/> */}
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} /> {/* Home */}
+                      <Route path="/projets/:id" element={<PageProjet />} /> {/* Home */}
+
+          </Routes>
+        </AnimatePresence>
+      </>
+    </div>
   );
 }
 
-export default App
+export default App;

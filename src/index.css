@@ -1,8 +1,44 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@font-face {
+  font-family: ZtBrosOskon;
+  src: url('../public/font/ZTBrosOskon90s-Regular.otf');
+}
+@font-face {
+  font-family: Supply;
+  src: url('../public/font/PPNeueMontrealMono-Medium.otf');
+}
 
+
+
+@theme {
+  --font-ztbroskon: "ZtBrosOskon", sans-serif; 
+  --font-supply: "Supply", sans-serif; 
+  --font-neue: "Neue Montreal", sans-serif; 
+  --color-primary:#E72E00;
+  --color-secondary:#FEF8F2;
+  --text-headings : 160px;
+  --text-paragraphe : 16px;
+  --text-supply : 14px;
+  --spacing-margin: 64px;
+  --spacing-space-bottom : 150px;
+  --spacing-text-bottom : 40px;
+  --text-smallheadings : 80px;
+  --text-smallparagraphe : 16px;
+  --spacing-smallmargin: 30px;
+  --spacing-smallspace-bottom : 120px;
+  --spacing-smalltext-bottom : 20px
+}
+.custom-selection::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
+}
+canvas{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: inherit;
+}
