@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 
-const BalanceSimulator = () => {
+const MatterCubes = () => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [poids, setPoids] = useState(0);
   const [prix, setPrix] = useState(0);
   const engineRef = useRef(null);
+  const renderRef = useRef(null);
   const objetsDansBalanceRef = useRef(new Map());
 
   useEffect(() => {
@@ -28,12 +29,14 @@ const BalanceSimulator = () => {
         wireframes: false,
       },
     });
+    renderRef.current = render;
 
     Matter.Render.run(render);
-    Matter.Runner.run(Matter.Runner.create(), engine);
+    const runner = Matter.Runner.create();
+    Matter.Runner.run(runner, engine);
 
     // Sol et structure
-    const balanceTextWidth = 200; // replace with actual value
+    const balanceTextWidth = 200;
     const sacBase = Matter.Bodies.rectangle(width / 2, 490, balanceTextWidth, 26, {
       isStatic: true,
       render: { visible: false },
@@ -138,31 +141,51 @@ const BalanceSimulator = () => {
     const handleResize = () => {
       const newWidth = container.offsetWidth;
       canvas.width = newWidth;
-      render.canvas.width = newWidth;
       render.options.width = newWidth;
+      Matter.Render.setPixelRatio(render, window.devicePixelRatio);
     };
 
     window.addEventListener("resize", handleResize);
     handleResize();
 
     return () => {
-      Matter.Render.stop(render);
-      Matter.World.clear(world);
-      Matter.Engine.clear(engine);
-      render.canvas.remove();
-      Matter.Render.lookAt(render, null);
       window.removeEventListener("resize", handleResize);
+      
+      // Clean up Matter.js resources
+      if (renderRef.current) {
+        Matter.Render.stop(renderRef.current);
+      }
+      
+      if (runner) {
+        Matter.Runner.stop(runner);
+      }
+      
+      if (engineRef.current) {
+        Matter.Engine.clear(engineRef.current);
+        Matter.World.clear(engineRef.current.world, false);
+      }
+      
+      // Clear the canvas
+      if (canvasRef.current) {
+        const context = canvasRef.current.getContext('2d');
+        if (context) {
+          context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        }
+      }
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full">
-      <canvas ref={canvasRef} id="world" />
-      <div className="absolute top-0 left-0 p-2 text-white">
-        <p>Poids total : {poids} kg</p>
-        <p>Prix total : {prix} €</p>
-      </div>
-    </div>
+    <div ref={containerRef} className="relative w-full min-h-screen overflow-y-auto">
+  <canvas ref={canvasRef} id="world" />
+  <div className="absolute top-0 left-0 p-2 text-white z-10">
+    <p>Poids total : {poids} kg</p>
+    <p>Prix total : {prix} €</p>
+  </div>
+
+  <div className="mt-[800px] text-white">Fin de page</div>
+</div>
+
   );
 };
 

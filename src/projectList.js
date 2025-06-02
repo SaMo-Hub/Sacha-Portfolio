@@ -61,7 +61,7 @@ export const projectList = [
     subtitle:"Rénovation / Construction",
     description:
       "Le projet consiste à concevoir une interface utilisateur intuitive et esthétique pour un créateur de miniatures YouTube. L'objectif est de permettre aux utilisateurs, qu'ils soient novices ou expérimentés, de créer facilement des miniatures accrocheuses et professionnelles pour leurs vidéos YouTube.      ",
-    categorie: ["Web design",],
+    categorie: ["Web design","Developement"],
   },
   {
     date:2023,

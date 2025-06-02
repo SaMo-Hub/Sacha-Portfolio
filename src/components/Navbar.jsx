@@ -2,28 +2,49 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
 import gsap from "gsap";
 
-export const Navbar = ({ item }) => {
+export const Navbar = ({ primary, secondary }) => {
   const { id } = useParams();
+  const link = useParams()
+  // const router = useTrasitionRouter()
+  // const pathname = usePathname()
+
+  useEffect(()=>{
+   
+  })
+
+//   const handlenavigation = (path) => (e) => {
+//     if ( path === pathname) {
+//       e.preventDefault();
+//       return
+//     }
+//   }
+// router.push(path,{
+//   onTransitionReady: triggerPageTransition,
+// })
+ const value = Object.values(link)[0] ==='' ? "home" : Object.values(link)[0];
+
+ console.log( link);
+  
   const [modal, setModal] = useState(false);
 
   const overlayRef = useRef(null);
   const tl = useRef(null);
-
+  
   // Menu dynamique
   const menuItems = [
-    { title: "home", subtitle: "revenir à la page principale" },
-    { title: "about", subtitle: "en savoir plus" },
-    { title: "projet", subtitle: "voir mes projets" },
+    { title: "home", subtitle: "revenir à la page principale",link:"" },
+    { title: "about", subtitle: "en savoir plus",link:'about' },
+    { title: "projet", subtitle: "voir mes projets",link:"#projet" },
   ];
-
+  
   // Refs dynamiques
   const titleRefs = useRef([]);
   const subtitleRefs = useRef([]);
-
+  
   // Colors
-  const textColor = id ? item.textColor : "";
-  const bgColor = id ? item.backgroundColor : "";
-
+  const textColor = primary ? primary : "";
+  const bgColor = primary ? secondary : "";
+  
   useEffect(() => {
     // Set initial state
     gsap.set(overlayRef.current, {
@@ -86,22 +107,25 @@ export const Navbar = ({ item }) => {
   }, [modal]);
 
   return (
-    <div className="fixed w-full z-30"
-    
+    <div className="fixed custom-selection w-full z-30"
+    style={{
+        "--selection-bg": textColor,
+        "--selection-text": bgColor,
+      }}
     >
       <nav
       className="w-full relative z-10 flex justify-between items-center p-12">
         <Link
-                style={id ? { color: modal ? bgColor : textColor } : {color:modal ? 'white' : ''}}
+                style={primary ? { color: modal ? bgColor : textColor } : {color:modal ? 'white' : ''}}
 
           className="font-supply text-xs  "
           to={`/`}
         >
           <div className="group relative">
-            <p className="uppercase transition-all">index</p>
+            <p className="uppercase transition-all">index  </p>
             <div
               className=" group-hover:w-full pointer-events-none duration-500 transition-all w-0 bottom-0 h-[1.5px] absolute"
-              style={id ? { backgroundColor: modal ? bgColor : textColor } : {}}
+              style={primary ? { backgroundColor: modal ? bgColor : textColor } : {}}
             ></div>
           </div>
         </Link>
@@ -141,7 +165,7 @@ export const Navbar = ({ item }) => {
         <button
           onClick={() => setModal(!modal)}
           
-          style={id ?{
+          style={primary ?{
             backgroundColor: textColor,
             color: modal ? textColor : bgColor,
           } : {  backgroundColor: "white",
@@ -177,7 +201,7 @@ export const Navbar = ({ item }) => {
 
       <div
         ref={overlayRef}
-        style={id ?{
+        style={primary ?{
           backgroundColor: textColor,
           color: bgColor,
         }: {color : 'white'}}
@@ -189,14 +213,20 @@ export const Navbar = ({ item }) => {
               key={i}
               className="px-12 group py-2 flex justify-between relative items-center"
             >
-              <div className="font-ztbroskon overflow-hidden group-hover: text-white z-10 uppercase text-[20vw]">
+              <Link
+                                            to={`/${item.link} `}
+
+              className="font-ztbroskon relative group overflow-hidden group-hover: text-white z-10 uppercase text-[20vw]">
                 <h3
                   ref={(el) => (titleRefs.current[i] = el)}
-                  className="text-[17vw]/[18vw] h-[15vw] r"
+                  className={` text-[17vw]/[18vw] h-[15vw]`}
                 >
                   {item.title}
                 </h3>
-              </div>
+                <div className={`absolute top-[50%] transition-all h-2 ${value == item.title ? "-translate-x-0" : "-translate-x-[50vw]"}  w-full bg-red-600`}>
+
+                </div>
+              </Link>
               <div className="h-fit z-10 overflow-hidden">
                 <p
                   ref={(el) => (subtitleRefs.current[i] = el)}
@@ -207,7 +237,7 @@ export const Navbar = ({ item }) => {
               </div>
               <div
                 style={{ backgroundColor: bgColor }}
-                className={`-translate-x-[100vw]  group-hover:translate-x-0 h-full duration-700 transition-all inset-0 w-full absolute`}
+                className={`-translate-x-[100vw] bg-amber-400  group-hover:translate-x-0 h-full duration-700 transition-all inset-0 w-full absolute`}
               />
             </div>
           ))}

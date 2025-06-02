@@ -11,16 +11,24 @@ export const Rolodex = () => {
 
   // Suivre la souris pour animer la position de l'image
   useEffect(() => {
-    const moveImage = (e) => {
-      if (imageContainerRef.current) {
-        gsap.to(imageContainerRef.current, {
-          duration: 0.4,
-          x: e.clientX - 150,
-          y: e.clientY - 150,
-          ease: "power2.out",
-        });
-      }
-    };
+  const moveImage = (e) => {
+  if (imageContainerRef.current && containerRef.current) {
+    const containerBounds = containerRef.current.getBoundingClientRect();
+
+    const mouseX = e.clientX - containerBounds.left;
+    const mouseY = e.clientY - containerBounds.top;
+
+    const imageWidth = 300; // ou dynamique via `imageContainerRef.current.offsetWidth`
+gsap.to(imageContainerRef.current, {
+  duration: 0.4,
+  x: mouseX - imageWidth / 2,
+  y: mouseY - imageWidth / 2,
+  ease: "power2.out",
+});
+
+  }
+};
+
 
     const container = containerRef.current;
     if (container) {
@@ -86,13 +94,13 @@ export const Rolodex = () => {
       <div className="w-full">
         {projectList.map((item, index) => (
           <Link
-            key={item.id}
+            key={index}
             className="w-full relative z-10 "
             to={`/projets/${item.id}`}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            <div className="flex items-center w-full hover:bg-black/[2%] hover:text-black/40 uppercase pt-3 pb-18 border-t justify-between font-supply text-xs">
+            <div className="flex items-center w-full hover:bg-black/[2%] hover:text-black/80 uppercase pt-3 pb-18 border-t justify-between font-supply text-xs">
               <p>date : {item.date}</p>
               <p>categorie : {item.categorie}</p>
             </div>

@@ -11,9 +11,9 @@ export const Navbar2 = ({ item }) => {
 
   // Menu dynamique
   const menuItems = [
-    { title: "home", subtitle: "revenir à la page principale" },
-    { title: "about", subtitle: "en savoir plus" },
-    { title: "projet", subtitle: "voir mes projets" },
+    { title: "home", subtitle: "revenir à la page principale",link:"" },
+    { title: "about", subtitle: "en savoir plus",link:'about' },
+    { title: "projet", subtitle: "voir mes projets",link:"#projet" },
   ];
 
   // Refs dynamiques
@@ -98,7 +98,7 @@ export const Navbar2 = ({ item }) => {
             color: modal ? textColor : textColor,
           } : {  backgroundColor: "white",
             color: "#2D2D2D"}}
-          className="group cursor-pointer gap-2 items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-supply text-xs"
+          className="group cursor-pointer gap-2 justify-center items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-supply text-xs"
         
           to={`/`}
         >
@@ -159,14 +159,17 @@ export const Navbar2 = ({ item }) => {
               key={i}
               className="px-12 group py-2 flex justify-between relative items-center"
             >
-              <div className="font-ztbroskon overflow-hidden group-hover: text-white z-10 uppercase text-[20vw]">
+              <Link
+                              to={`/${item.link} `}
+
+              className="font-ztbroskon overflow-hidden group-hover: text-white z-10 uppercase text-[20vw]">
                 <h3
                   ref={(el) => (titleRefs.current[i] = el)}
                   className="text-[17vw]/[18vw] h-[15vw] r"
                 >
                   {item.title}
                 </h3>
-              </div>
+              </Link>
               <div className="h-fit z-10 overflow-hidden">
                 <p
                   ref={(el) => (subtitleRefs.current[i] = el)}
@@ -177,7 +180,7 @@ export const Navbar2 = ({ item }) => {
               </div>
               <div
                 style={{ backgroundColor: bgColor }}
-                className={`-translate-x-[100vw]  group-hover:translate-x-0 h-full duration-700 transition-all inset-0 w-full absolute`}
+                className={`-translate-x-[100vw] bg-amber-300  group-hover:translate-x-0 h-full duration-700 transition-all inset-0 w-full absolute`}
               />
             </div>
           ))}
