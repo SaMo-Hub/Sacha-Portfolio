@@ -1,50 +1,51 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
 import gsap from "gsap";
+import { Footer } from "./Footer";
 
-export const Navbar = ({ primary, secondary }) => {
+export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
   const { id } = useParams();
-  const link = useParams()
+
+  const link = useParams();
   // const router = useTrasitionRouter()
   // const pathname = usePathname()
 
-  useEffect(()=>{
-   
-  })
+  useEffect(() => {});
 
-//   const handlenavigation = (path) => (e) => {
-//     if ( path === pathname) {
-//       e.preventDefault();
-//       return
-//     }
-//   }
-// router.push(path,{
-//   onTransitionReady: triggerPageTransition,
-// })
- const value = Object.values(link)[0] ==='' ? "home" : Object.values(link)[0];
+  //   const handlenavigation = (path) => (e) => {
+  //     if ( path === pathname) {
+  //       e.preventDefault();
+  //       return
+  //     }
+  //   }
+  // router.push(path,{
+  //   onTransitionReady: triggerPageTransition,
+  // })
+  const value = Object.values(link)[0] === "" ? "home" : Object.values(link)[0];
 
- console.log( link);
-  
+  console.log(link);
+
   const [modal, setModal] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const overlayRef = useRef(null);
   const tl = useRef(null);
-  
+
   // Menu dynamique
   const menuItems = [
-    { title: "home", subtitle: "revenir à la page principale",link:"" },
-    { title: "about", subtitle: "en savoir plus",link:'about' },
-    { title: "projet", subtitle: "voir mes projets",link:"#projet" },
+    { title: "home", subtitle: "revenir à la page principale", link: "" },
+    { title: "about", subtitle: "en savoir plus", link: "about" },
+    // { title: "projet", subtitle: "voir mes projets",link:"#projet" },
   ];
-  
+
   // Refs dynamiques
   const titleRefs = useRef([]);
   const subtitleRefs = useRef([]);
-  
+
   // Colors
   const textColor = primary ? primary : "";
   const bgColor = primary ? secondary : "";
-  
+
   useEffect(() => {
     // Set initial state
     gsap.set(overlayRef.current, {
@@ -53,12 +54,12 @@ export const Navbar = ({ primary, secondary }) => {
 
     gsap.set(titleRefs.current, {
       y: 200,
-      autoAlpha: 0,
+      // autoAlpha: 0,
     });
 
     gsap.set(subtitleRefs.current, {
       y: 200,
-      autoAlpha: 0,
+      // autoAlpha: 0,
     });
 
     // Timeline
@@ -77,7 +78,7 @@ export const Navbar = ({ primary, secondary }) => {
       {
         duration: 0.8,
         y: 0,
-        autoAlpha: 1,
+        // autoAlpha: 1,
         ease: "power4.out",
         stagger: 0.2, // délai entre chaque titre
       },
@@ -90,7 +91,7 @@ export const Navbar = ({ primary, secondary }) => {
       {
         duration: 0.8,
         y: 0,
-        autoAlpha: 1,
+        // autoAlpha: 1,
         ease: "power4.out",
         stagger: 0.1,
       },
@@ -107,69 +108,54 @@ export const Navbar = ({ primary, secondary }) => {
   }, [modal]);
 
   return (
-    <div className="fixed custom-selection w-full z-30"
-    style={{
+    <div
+      className="fixed custom-selection w-full z-30"
+      style={{
         "--selection-bg": textColor,
         "--selection-text": bgColor,
       }}
     >
-      <nav
-      className="w-full relative z-10 flex justify-between items-center p-12">
+      <nav className="w-full relative z-10 flex justify-between items-center p-8 md:p-12 ">
         <Link
-                style={primary ? { color: modal ? bgColor : textColor } : {color:modal ? 'white' : ''}}
-
+          style={
+            primary
+              ? { color: modal ? bgColor : textColor }
+              : { color: modal ? "white" : "" }
+          }
           className="font-supply text-xs  "
           to={`/`}
         >
-          <div className="group relative">
-            <p className="uppercase transition-all">index  </p>
+          <div 
+           onClick={() => {
+              settextColor("#2D2D2D");
+                  setbgColor("#fff");
+              }}
+          className="group relative">
+            <p
+             
+              className="uppercase transition-all"
+            >
+              index{" "}
+            </p>
             <div
               className=" group-hover:w-full pointer-events-none duration-500 transition-all w-0 bottom-0 h-[1.5px] absolute"
-              style={primary ? { backgroundColor: modal ? bgColor : textColor } : {}}
+              style={
+                primary ? { backgroundColor: modal ? bgColor : textColor } : {}
+              }
             ></div>
           </div>
         </Link>
-        {/* <button
-          onClick={() => setModal(!modal)}
-          
-          style={id ?{
-            backgroundColor: bgColor,
-            color: modal ? textColor : textColor,
-          } : {  backgroundColor: "white",
-            color: "#2D2D2D"}}
-          className="group cursor-pointer gap-2 items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-supply text-xs"
-        >
-          <div className="w-6 h-6 relative z-10 flex flex-col justify-center items-center gap-[6px]">
-            <div
-              className={`h-[1.5px] w-4 bg-current transition-all duration-500 origin-center ${
-                modal ? "rotate-45 translate-y-[3px]" : ""
-              }`}
-              style={{ backgroundColor:  textColor }}
-            />
-            <div
-              className={`h-[1.5px]  w-4 bg-current transition-all duration-500 origin-center ${
-                modal ? "-rotate-45 -translate-y-[4px]" : ""
-              }`}
-              style={{ backgroundColor: textColor }}
-            />
-          </div>
 
-          <p className="relative z-10">menu</p>
-          <div
-            style={{ backgroundColor: bgColor, color: textColor }}
-            className={`${
-              modal ? "translate-y-0 " : "-translate-y-11"
-            } h-full duration-700 transition-all inset-0 w-full absolute`}
-          ></div>
-        </button> */}
         <button
           onClick={() => setModal(!modal)}
-          
-          style={primary ?{
-            backgroundColor: textColor,
-            color: modal ? textColor : bgColor,
-          } : {  backgroundColor: "white",
-            color: modal ? textColor : bgColor,}}
+          style={
+            primary
+              ? {
+                  backgroundColor: textColor,
+                  color: modal ? textColor : bgColor,
+                }
+              : { backgroundColor: "white", color: modal ? textColor : bgColor }
+          }
           className="group cursor-pointer gap-2 items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-supply text-xs"
         >
           <div className="w-6 h-6 relative z-10 flex flex-col justify-center items-center gap-[6px]">
@@ -201,39 +187,72 @@ export const Navbar = ({ primary, secondary }) => {
 
       <div
         ref={overlayRef}
-        style={primary ?{
-          backgroundColor: textColor,
-          color: bgColor,
-        }: {color : 'white'}}
+        style={
+          primary
+            ? {
+                backgroundColor: textColor,
+                color: bgColor,
+              }
+            : { color: "white" }
+        }
         className="bg-[#2D2D2D] absolute top-0 pt-24 flex flex-col justify-between w-full h-screen"
       >
-        <div className="flex flex-col">
+        <div className="flex justify-center h-full flex-col">
           {menuItems.map((item, i) => (
             <div
+              onClick={() => {
+                if (item.title === "home") {
+                  settextColor("#fff");
+                  setbgColor("#2D2D2D");
+                } else {
+                  settextColor("#4C76E3");
+                  setbgColor("#DBDDE2");
+                }
+              }}
               key={i}
-              className="px-12 group py-2 flex justify-between relative items-center"
+              style={{ color: secondary }}
+              className="px-12 group py-2 flex md:flex-row  flex-col gap-2 justify-between relative items-center"
             >
               <Link
-                                            to={`/${item.link} `}
-
-              className="font-ztbroskon relative group overflow-hidden group-hover: text-white z-10 uppercase text-[20vw]">
+                to={`/${item.link}`}
+                className="font-ztbroskon relative group overflow-hidden group-hover:  z-10 uppercase"
+              >
                 <h3
                   ref={(el) => (titleRefs.current[i] = el)}
-                  className={` text-[17vw]/[18vw] h-[15vw]`}
+                  className={`group-hover:hidden text-[17vw]/[18vw] md:text-[190px]/[190px] h-[15vw] md:h-[180px]`}
                 >
                   {item.title}
                 </h3>
-                <div className={`absolute top-[50%] transition-all h-2 ${value == item.title ? "-translate-x-0" : "-translate-x-[50vw]"}  w-full bg-red-600`}>
-
-                </div>
+                <h3
+                  // style={{cl}}
+                  style={{ color: primary }}
+                  className={`group-hover:block hidden text-[17vw]/[18vw] md:text-[190px]/[190px] h-[15vw] md:h-[180px]`}
+                >
+                  {item.title}
+                </h3>
+                <div
+                  className={`absolute top-[50%] transition-all h-2 ${
+                    value == item.title
+                      ? "-translate-x-0"
+                      : "-translate-x-[50vw]"
+                  }  w-full bg-red-600`}
+                ></div>
               </Link>
               <div className="h-fit z-10 overflow-hidden">
-                <p
+                <div
+                  className="h-fit"
                   ref={(el) => (subtitleRefs.current[i] = el)}
-                  className="font-supply z-10 group-hover: text-white text-xs uppercase"
                 >
-                  ({item.subtitle})
-                </p>
+                  <p
+                    style={{ color: primary }}
+                    className="font-supply group-hover:block hidden  z-10 group-hover:  text-xs uppercase"
+                  >
+                    ({item.subtitle})
+                  </p>
+                  <p className="font-supply group-hover:hidden  z-10 group-hover:  text-xs uppercase">
+                    ({item.subtitle})
+                  </p>
+                </div>
               </div>
               <div
                 style={{ backgroundColor: bgColor }}
@@ -243,22 +262,7 @@ export const Navbar = ({ primary, secondary }) => {
           ))}
         </div>
 
-        <footer className="z-10 relative mx-12 py-12 border-t flex justify-between font-supply items-end text-xs uppercase">
-          <div className="flex items-end gap-12">
-            <ul>
-              <li>home</li>
-              <li>about</li>
-              <li>portfolio</li>
-            </ul>
-            <ul>
-              <li>instagram</li>
-              <li>linkedin</li>
-            </ul>
-          </div>
-          <Link to={"mailto:smoricet.contact@gmail.com"}>
-            smoricet.contact@gmail.com
-          </Link>
-        </footer>
+        <Footer primaryColor={secondary} secondaryColors={primary} />
       </div>
     </div>
   );

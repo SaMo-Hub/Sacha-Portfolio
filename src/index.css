@@ -42,3 +42,27 @@ canvas{
     z-index: 1;
     pointer-events: inherit;
 }
+
+.line-wrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.reveal-line {
+  display: inline;
+}
+.word{
+  overflow: hidden;
+}
+
+.line{
+overflow: hidden;
+}
+
+.clip-text {
+  clip-path: polygon(100% 0, 0% 0, 0% 100%, 100% 100%);
+}
+
+.clip-text:hover {
+  clip-path: polygon(50% 0, 0% 0, 0% 100%, 50% 100%);
+}

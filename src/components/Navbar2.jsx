@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
 import gsap from "gsap";
+import { Footer } from "./Footer";
 
 export const Navbar2 = ({ item }) => {
   const { id } = useParams();
@@ -90,7 +91,7 @@ export const Navbar2 = ({ item }) => {
     
     >
       <nav
-      className="w-full relative z-10 flex justify-between items-center p-12">
+      className="w-full relative z-10 flex justify-between items-center p-8 md:p-12 ">
         <Link
               
           style={id ?{
@@ -153,19 +154,19 @@ export const Navbar2 = ({ item }) => {
         }: {color : 'white'}}
         className="bg-[#2D2D2D] absolute top-0 pt-24 flex flex-col justify-between w-full h-screen"
       >
-        <div className="flex flex-col">
+        <div className="h-screen md:justify-star  md:items-start items-center justify-center    flex flex-col">
           {menuItems.map((item, i) => (
             <div
               key={i}
-              className="px-12 group py-2 flex justify-between relative items-center"
+              className="px-12 group py-2 flex  gap-4 flex-col md:flex-row w-full md:justify-between relative items-center"
             >
               <Link
                               to={`/${item.link} `}
 
-              className="font-ztbroskon overflow-hidden group-hover: text-white z-10 uppercase text-[20vw]">
+              className="font-ztbroskon overflow-hidden group-hover: text-white z-10 uppercase  ">
                 <h3
                   ref={(el) => (titleRefs.current[i] = el)}
-                  className="text-[17vw]/[18vw] h-[15vw] r"
+                  className="text-[22vw]/[19vw] h-[16vw] lg:h-[170px] bg-ambr-700 lg:text-[220px]/[200px] "
                 >
                   {item.title}
                 </h3>
@@ -173,7 +174,7 @@ export const Navbar2 = ({ item }) => {
               <div className="h-fit z-10 overflow-hidden">
                 <p
                   ref={(el) => (subtitleRefs.current[i] = el)}
-                  className="font-supply z-10 group-hover: text-white text-xs uppercase"
+                  className="font-supply text-center z-10 group-hover: text-white text-xs uppercase"
                 >
                   ({item.subtitle})
                 </p>
@@ -186,22 +187,7 @@ export const Navbar2 = ({ item }) => {
           ))}
         </div>
 
-        <footer className="z-10 relative mx-12 py-12 border-t flex justify-between font-supply items-end text-xs uppercase">
-          <div className="flex items-end gap-12">
-            <ul>
-              <li>home</li>
-              <li>about</li>
-              <li>portfolio</li>
-            </ul>
-            <ul>
-              <li>instagram</li>
-              <li>linkedin</li>
-            </ul>
-          </div>
-          <Link to={"mailto:smoricet.contact@gmail.com"}>
-            smoricet.contact@gmail.com
-          </Link>
-        </footer>
+       <Footer/>
       </div>
     </div>
   );

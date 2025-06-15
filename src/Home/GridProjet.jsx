@@ -17,7 +17,9 @@ export const GridProjet = () => {
                 <p className='mt-8 text-sm'>{item.name} </p>
             <img className='group-hover:opacity-100 opacity-0 absolute z-10 top-0 h-full' src={item.logo} alt="" />
             </div>
-            <div className='group-hover:opacity-100 opacity-0 absolute top-0 left-0 bg-[#2D2D2D] w-full h-full'>
+            <div
+              // style={{backgroundColor:item.textColor}}
+            className='group-hover:opacity-100 opacity-0 absolute top-0 left-0 bg-[#2D2D2D] w-full h-full'>
 
             </div>
         </Link>

@@ -1,31 +1,61 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { projectList } from "../projectList";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { div } from "framer-motion/client";
 import { motion } from "framer-motion";
 import { Navbar } from "../components/Navbar";
 import MatterCubes from "../components/MatterCubes";
 import { Navbar2 } from "../components/Navbar2";
 import gsap from "gsap";
+import { Transition } from "../components/Transition";
+import RevealText from "../components/TextReveal";
+import { Footer } from "../components/Footer";
+import ScrollToTop from "../components/ScrollTop";
 
 export const PageProjet = () => {
   const { id } = useParams(); // Récupérer l'id de l'URL
+  const numericId = parseInt(id);
+  const [modalImage, setModalImage] = useState(null);
+
   const item = projectList.find((p) => p.id === parseInt(id));
+  const nextProjectColors = projectList.find((p) => p.id === numericId + 1);
+  const prevProjectColors = projectList.find((p) => p.id === numericId - 1);
+  const [bgColor, setbgColor] = useState(item.backgroundColor);
+  const [textColor, settextColor] = useState(item.textColor);
+  console.log(nextProjectColors, "gg");
   const list = ["ggg", "fff"];
   const titleRef = useRef(null);
   const dateRef = useRef(null);
   const projetNumberRef = useRef(null);
   useEffect(() => {
+    window;
+  });
+
+  useEffect(() => {
     if (titleRef.current && dateRef.current) {
       gsap.fromTo(
         titleRef.current,
         { y: 1000, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.3, ease: "power4.out", stagger: 0 }
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.3,
+          ease: "power4.out",
+          stagger: 0,
+          delay: 0.3,
+        }
       );
       gsap.fromTo(
         [projetNumberRef.current, dateRef.current],
         { y: 1000, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.3, ease: "power4.out", stagger: 0.4 }
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.3,
+          ease: "power4.out",
+          stagger: 0.2,
+          delay: 0.2,
+        }
       );
     }
   }, [item]);
@@ -38,51 +68,15 @@ export const PageProjet = () => {
         "--selection-text": item.backgroundColor,
       }}
     >
-        <motion.div
-      
-              initial={{
-          clipPath: "inset(0% 0% 0% 0%)", // plein écran visible
-        }}
-        animate={{
-          clipPath: "inset(100% 0% 0% 0%)", // cache par le haut
-        }}
-        exit={{
-          clipPath: "inset(0% 0% 0% 0%)", // réapparaît quand on quitte
-        }}
-              transition={{  duration: 1.25, ease: [0.9, 0, 0.1, 1] }}
-              className=" fixed top-0 left-0 w-screen h-screen origin-[top] text-white items-center flex flex-col justify-center bg-blue-500 pointer-events-none z-40"
-            >
-               <div className='overflow-hidden '>
-                            <motion.h2
-                            animate={{ translateY: "-100%" }}
-                  initial={{translateY: "0%"}}
-                    exit={{ translateY: "0%" }}
-                    transition={{delay:0.5, duration: 0.6, ease:'easeInOut' }}
-                            className='font-supply translate-y-0 uppercase text-xs'>
-                                (moricet)
-                            </motion.h2>
-                            </div>
-                            <div className='overflow-hidden flex flex-col items-baseline  h-[10vw] '>
-            
-                            <motion.h1
-                                              initial={{translateY: "0%"}}
-
-                            animate={{ translateY: "-100%" }}
-                    exit={{ translateY: "0%" }}
-                    transition={{delay:0.7 ,duration: 0.6, ease:'easeInOut' }}
-                            className='font-ztbroskon text-[12vw]/[12vw] uppercase h-fit '>
-                                Sacha
-                            </motion.h1>
-                            </div>
-            </motion.div>
-      {/* <motion.div
-        style={{ backgroundColor: "black" }}
-        animate={{ translateY: "-100%" }}
-        exit={{ translateY: "0%" }}
-        transition={{ duration: 0.8, ease: [1, 0, 0.58, 1] }}
-        className="fixed bottom-0 left-0 w-full h-screen origin-top z-50"
-      /> */}
-      <Navbar2 item={item} />
+      <Transition primaryColor={textColor} secondaryColor={bgColor} />
+      <RevealText /> {/* Initialise les animations au mount */}
+      <ScrollToTop />
+      <Navbar
+        setbgColor={setbgColor}
+        settextColor={settextColor}
+        primary={item.textColor}
+        secondary={item.backgroundColor}
+      />
       <div
         style={{ backgroundColor: item.backgroundColor, color: item.textColor }}
         className=""
@@ -92,112 +86,211 @@ export const PageProjet = () => {
             backgroundColor: item.backgroundColor,
             color: item.textColor,
           }}
-          className="h-screen px-12  w-full flex justify-between items-center"
+          className="h-screen px-8 md:px-12  w-full flex justify-between items-center"
         >
           <div className="overflow-hidden">
             <p ref={projetNumberRef} className="font-supply text-xs ">
-              (1/{projectList.length})
+              ({item.id}/{projectList.length})
             </p>
           </div>
-          <div className="bg-amber-0 flex items-center   wf overflow-hidden">
+          <div className="bg-amber-5 h-[12vw] flex items-start justify-baseline   wf overflow-hidden">
             <h1 ref={titleRef} className="text-[14vw]/[15vw]   font-ztbroskon ">
               {item.title}
             </h1>
           </div>
           <div className="overflow-hidden">
             <p ref={dateRef} className="font-supply text-xs ">
-              (2023)
+              {item.date}
             </p>
           </div>
         </div>
-
-<div className="grid grid-cols-12 grid-rows-1 gap-0 relative mx-12">
-  {/* Partie sticky avec top défini */}
-  <div className="sticky top-24 col-start-1 col-end-5 row-start-1 row-end-2 text-xs font-supply self-start">
-    <div>
-      <div className="uppercase flex flex-col gap-5">
-        <p>(role)</p>
-        <div className="flex flex-col gap-">
-          {item.categorie.map((cat, index) => (
-            <p key={index}>/{cat}</p>
-          ))}
-        </div>
-      </div>
-      <p className="mt-12">{item.description}</p>
-    </div>
-    <div className="bg-black mt-2 text-xs w-fit uppercase text-white rounded-sm p-2">
-      site live
-    </div>
-  </div>
-
-  {/* Partie scrollable à côté */}
-  <div className="col-start-6 col-end-13 row-start-1 row-end-2">
-    <div className="flex flex-col gap-4">
-      {item.listImage.slice(1).map((image, imgIndex) => (
-        <div key={imgIndex}>
-          {image.grid && (
-            <div className={`${image.gridName} grid gap-4`}>
-              {image.grid.map((gridImg, index) => (
-                <img key={`grid-${imgIndex}-${index}`} src={gridImg} alt="" />
-              ))}
-            </div>
-          )}
-
-          {image.img && (
-            <img
-              key={`img-${imgIndex}`}
-              className="w-full"
-              src={image.img}
-              alt={`Illustration ${imgIndex + 1}`}
-            />
-          )}
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
-
-        {/* <div>
-        <div         style={{ backgroundColor: item.textColor, color: item.backgroundColor }}
- className="flex-col px-12 md:flex-row  p-24 gap-8 flex">
+        {modalImage && (
           <div
-            style={{
-              borderColor: `${item.textColor}50`, // 80 en hex = 50% d'opacité
-            }}
-            className="hover:border-[#ffffff2a] transition-all w-fit hover:bg-white/10 flex h-fit items-center rounded-sm  py-1.5 p-2 border"
+            className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
+            onClick={() => setModalImage(null)}
           >
-            <p className="font-supply text-supply w-fit ">{item.categorie}</p>
+            <div
+              className="max-w-[90vw] rounded-md max-h-[90vh] overflow-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={modalImage}
+                alt="Image zoom"
+                className="w-full h-auto r"
+              />
+            </div>
           </div>
-          <div className="flex justify-end w-full">
-  <div className="w-2/3">
-    <p className="text-supply font-supply pb-4">Information</p>
-    <p className="font-ztbroskon text-5xl">{item.description}</p>
-  </div>
-</div>
-        </div>
-        <div className="flex flex-col gap-4">
-          {item.listImage.slice(1).map((image, imgIndex) => (
-            <div key={imgIndex}>
-              {image.grid && (
-                <div className={`${image.gridName} grid gap-4`}>
-                  {image.grid.map((item, index) => (
-                    <img key={`grid-${imgIndex}-${index}`} src={item} alt="" />
+        )}
+
+        <div className="flex flex-col gap-12 md:grid  grid-cols-12  md:gap-0 relative px-8 md:px-12 ">
+          <div className="md:sticky  md:top-24 col-start-1 col-end-5 row-start-1 row-end-2 text-xs font-supply self-start">
+            <div>
+              <div className="uppercase flex flex-col gap-5">
+                <p className="reveal-line">(role)</p>
+                <div className="flex flex-col gap-">
+                  {item.categorie.map((cat, index) => (
+                    <p className="reveal-line" key={index}>
+                      /{cat}
+                    </p>
                   ))}
                 </div>
-              )}
-
-              {image.img && (
-                <img
-                  key={`img-${imgIndex}`}
-                  className="w-full"
-                  src={image.img}
-                  alt={`Illustration ${imgIndex + 1}`}
-                />
-              )}
+              </div>
+              <div className=" mt-12 flex flex-col gap-8">
+                {item.description.map((item, index) => (
+                  <p id={index} className="reveal-line ">
+                    {item}
+                  </p>
+                ))}
+              </div>
             </div>
-          ))}
+            {item.link && (
+              <Link
+                to={item.link}
+                // target="_blank"
+                style={{
+                  backgroundColor: item.textColor,
+                  color: item.backgroundColor,
+                }}
+                className="bg-black group overflow-hidden flex flex-col items-center mt-4 text-xs w-fit uppercase  text-white rounded-sm p-2"
+              >
+                <div className="flex">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="size-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
+                    />
+                  </svg>
+
+                  <p className="ml-2 reveal-line">site live</p>
+                </div>
+
+                <div className=" h-full w-full overflow-hidden">
+                  <div
+                    style={{ backgroundColor: item.backgroundColor }}
+                    className="h-[1.5px] -translate-x-[90px] duration-300  transition-all  group-hover:-translate-x-[0px]  w-full"
+                  ></div>
+                </div>
+              </Link>
+            )}
+            <div className="gap-2 uppercase flex mt-42">
+              <Link
+                onClick={() => {
+                  settextColor(prevProjectColors.textColor),
+                    setbgColor(prevProjectColors.backgroundColor);
+                }}
+                style={{ borderColor: item.textColor, color: item.textColor }}
+                className={`flex border relative items-center group overflow-hidden z-20 w-fit p-2 rounded-sm ${
+                  id <= 1 ? "hidden" : "block"
+                }  `}
+                to={`/projets/${parseInt(id) - 1}`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2.5}
+                  stroke="currentColor"
+                  className="size-3.5"
+                >
+                  <path
+                    strokeLinecap="square"
+                    strokeLinejoin="square"
+                    d="M15.75 19.5 8.25 12l7.5-7.5"
+                  />
+                </svg>
+                <p>
+                  {id <= 1
+                    ? ""
+                    : projectList.find((p) => p.id === parseInt(id - 1)).title}
+                </p>
+                <div
+                  style={{ backgroundColor: item.textColor }}
+                  className=" absolute  duration-300 transition-all  h-full translate-x-[140px]  w-full opacity-15 group-hover:-translate-x-[0px]  left-0 top-0"
+                ></div>
+              </Link>
+
+              <Link
+                onClick={() => {
+                  settextColor(nextProjectColors.textColor),
+                    setbgColor(nextProjectColors.backgroundColor);
+                }}
+                style={{ borderColor: item.textColor, color: item.textColor }}
+                className={`overflow-hidden group border flex items-center relative z-20 w-fit p-2 rounded-sm ${
+                  id >= projectList.length ? "hidden" : "block"
+                }  `}
+                to={`/projets/${parseInt(id) + 1}`}
+              >
+                <p>
+                  {id >= projectList.length
+                    ? ""
+                    : projectList.find((p) => p.id === parseInt(id) + 1).title}
+                </p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2.5}
+                  stroke="currentColor"
+                  className="size-3.5"
+                >
+                  <path
+                    strokeLinecap="square"
+                    strokeLinejoin="square"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+                <div
+                  style={{ backgroundColor: item.textColor }}
+                  className=" absolute duration-300   transition-all  h-full -translate-x-[140px]  w-full opacity-15 group-hover:-translate-x-[0px]  left-0 top-0"
+                ></div>
+              </Link>
+            </div>
+          </div>
+
+          {/* Partie scrollable à côté */}
+          <div className="col-start-6 col-end-13 row-start-1 row-end-2">
+            <div className="flex flex-col gap-4">
+              {item.listImage.map((image, imgIndex) => (
+                <div key={imgIndex}>
+                  {image.grid && (
+                    <div className={`${image.gridName} grid gap-4`}>
+                      {image.grid.map((gridImg, index) => (
+                        <img
+                          key={`grid-${imgIndex}-${index}`}
+                          src={gridImg}
+                          alt=""
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {image.img && (
+                    <img
+                      key={`img-${imgIndex}`}
+                      className="w-full rounded-sm cursor-pointer"
+                      src={image.img}
+                      alt={`Illustration ${imgIndex + 1}`}
+                      onClick={() => setModalImage(image.img)}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div> */}
+
+        <Footer
+          primaryColor={item.textColor}
+          secondaryColor={item.backgroundColor}
+        />
       </div>
     </div>
   );
