@@ -29,6 +29,8 @@
   --spacing-smallspace-bottom : 120px;
   --spacing-smalltext-bottom : 20px
 }
+
+html 
 .custom-selection::selection {
   background-color: var(--selection-bg);
   color: var(--selection-text);
@@ -65,4 +67,23 @@ overflow: hidden;
 
 .clip-text:hover {
   clip-path: polygon(50% 0, 0% 0, 0% 100%, 50% 100%);
+}
+
+
+.always-visible-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.always-visible-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+}
+
+.always-visible-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.always-visible-scrollbar {
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+  scrollbar-width: thin;
 }

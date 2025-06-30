@@ -180,7 +180,7 @@ useEffect(() => {
           {projectList.map((item, index) => (
             <div key={index}>
               <img
-                className="h-[300px] sm:hidden relative z-20"
+                className="h-[300px]  relative z-20"
                 src={item.thumbnail}
                 alt=""
               />

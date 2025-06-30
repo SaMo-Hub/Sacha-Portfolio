@@ -110,7 +110,7 @@ export const PageProjet = () => {
             onClick={() => setModalImage(null)}
           >
             <div
-              className="max-w-[90vw] rounded-md max-h-[90vh] overflow-auto"
+              className="max-w-[90vw] r max-h-[90vh] overflow-scroll"
               onClick={(e) => e.stopPropagation()}
             >
               <img
