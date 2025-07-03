@@ -59,6 +59,7 @@ export const projectList = [
     backgroundColor: "#084527",
     textColor: "#FFB53B",
     title: "Khan",
+    link:"https://khan-renovation.web.app/",
     name: "Khan",
     logo: KhanLogo,
     thumbnail: Khanthumbnail,

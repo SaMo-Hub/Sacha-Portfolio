@@ -5,6 +5,7 @@ import { PageProjet } from "./ProjetPage/PageProjet";
 import { Navbar } from "./components/Navbar";
 import { About } from "./About/About";
 import ScrollToTop from "./components/ScrollTop";
+import { LenisProvider } from './components/LenisProvider'
 
 function App() {
   const location = useLocation();
@@ -13,6 +14,7 @@ function App() {
     <div className=" ">
       <>
         {/* <ScrollToTop/> */}
+    <LenisProvider>
 
         <AnimatePresence mode="wait">
           {/* <ScrollToHashElement/> */}
@@ -22,6 +24,8 @@ function App() {
             <Route path="/projets/:id" element={<PageProjet />} /> Home
           </Routes>
         </AnimatePresence>
+            </LenisProvider>
+
       </>
     </div>
   );
