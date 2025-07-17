@@ -93,8 +93,8 @@ export const PageProjet = () => {
               ({item.id}/{projectList.length})
             </p>
           </div>
-          <div className="bg-amber-5 h-[12vw] flex items-start justify-baseline   wf overflow-hidden">
-            <h1 ref={titleRef} className="text-[14vw]/[15vw]   font-ztbroskon ">
+          <div className="bg-amber-5 h-[14.6vw] flex items-start justify-baseline   wf overflow-hidden">
+            <h1 ref={titleRef} className="text-[14vw]/[14vw]   font-ztbroskon ">
               {item.title}
             </h1>
           </div>

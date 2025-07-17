@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 
 function Home() {
   const [bgColor, setbgColor] = useState("#2D2D2D")
-    const [textColor, settextColor] = useState("#fff")
+    const [textColor, settextColor] = useState("#F9F9F9")
   gsap.registerPlugin(CustomEase);
   CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
@@ -29,18 +29,23 @@ function Home() {
   });
 
   return (
-    <div
-    style={{color:"#2D2D2D"}}
+    <div 
+     className="bg-[#F9F9F9] custom-selection"
+      style={{
+        color:"#2D2D2D",
+        "--selection-bg": "#2D2D2D",
+        "--selection-text": "#F9F9F9",
+      }}
     >
       {/* <div className="revealer fixed top-0 left-0 w-screen h-[100svh] origin-[top] bg-black pointer-events-none z-40 "></div> */}
       <Transition primaryColor={bgColor} secondaryColor={textColor}/>
     
 
-      <Navbar setbgColor={setbgColor} settextColor={settextColor}  primary={'#2D2D2D'} secondary={"#fff"} />
+      <Navbar setbgColor={setbgColor} settextColor={settextColor}  primary={'#2D2D2D'} secondary={"#F9F9F9"} />
       <Header />
       <Rolodex  setbgColor={setbgColor} settextColor={settextColor}/> 
       {/* <GridProjet /> */}
-      <Footer primaryColor={"#2D2D2D"} secondaryColors={"#fff"}/>
+      <Footer primaryColor={"#2D2D2D"} secondaryColors={"#F9F9F9"}/>
     </div>
   );
 }

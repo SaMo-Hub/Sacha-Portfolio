@@ -27,13 +27,13 @@ export const Header = () => {
   }, []);
 
   return (
-    <div className="h-screen   px-12 flex flex-col justify-end bg-amber-[#F9F9F9]">
+    <div className="h-screen   px-12 flex flex-col justify-end bg-[#F9F9F9]">
       <div className="relative bottom-12">
         <div className="overflow-hidden">
         <h2 ref={subtitlesRef} className="font-supply text-sm uppercase">(Sacha Moricet)</h2>
         </div>
 
-        <div className="  flex justify-end flex-col  bg-white">
+        <div className="  flex justify-end flex-col  ">
           <h1 className="text-[17vw]/[16vw]   flex flex-col  font-ztbroskon uppercase  ">
 
             <span className="overflow-hidden">

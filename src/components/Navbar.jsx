@@ -34,7 +34,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
   // Menu dynamique
   const menuItems = [
     { title: "home", subtitle: "revenir à la page principale", link: "" },
-    { title: "about", subtitle: "en savoir plus", link: "about" },
+    { title: "à propos", subtitle: "en savoir plus", link: "about" },
     // { title: "projet", subtitle: "voir mes projets",link:"#projet" },
   ];
 
@@ -199,7 +199,9 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
       >
         <div className="flex justify-center h-full flex-col">
           {menuItems.map((item, i) => (
-            <div
+            <Link
+                            to={`/${item.link}`}
+
               onClick={() => {
                 if (item.title === "home") {
                   settextColor("#fff");
@@ -213,8 +215,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
               style={{ color: secondary }}
               className="px-12 group py-2 flex md:flex-row  flex-col gap-2 justify-between relative items-center"
             >
-              <Link
-                to={`/${item.link}`}
+              <div
                 className="font-ztbroskon relative group overflow-hidden group-hover:  z-10 uppercase"
               >
                 <h3
@@ -230,14 +231,14 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
                 >
                   {item.title}
                 </h3>
-                <div
+                {/* <div
                   className={`absolute top-[50%] transition-all h-2 ${
                     value == item.title
                       ? "-translate-x-0"
                       : "-translate-x-[50vw]"
                   }  w-full bg-red-600`}
-                ></div>
-              </Link>
+                ></div> */}
+              </div>
               <div className="h-fit z-10 overflow-hidden">
                 <div
                   className="h-fit"
@@ -258,7 +259,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
                 style={{ backgroundColor: bgColor }}
                 className={`-translate-x-[100vw] bg-amber-400  group-hover:translate-x-0 h-full duration-700 transition-all inset-0 w-full absolute`}
               />
-            </div>
+            </Link>
           ))}
         </div>
 

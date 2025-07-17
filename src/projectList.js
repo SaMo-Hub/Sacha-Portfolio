@@ -52,6 +52,15 @@ import Dhoolfullsectionvideo from "/public/images/Dhool/sectionvideo.png";
 import Dhoolallframe from "/public/images/Dhool/allframe.png";
 import Dhoollogo from "/public/images/Dhool/logo.svg";
 
+
+// import Clefdesorges from "/public/images/Clef-des-orges/thumbnail.png";
+import Clefdesorgessectionvideo from "/public/images/Clef-des-orges/sectionvideo.png";
+import Clefdesorge2bouteilles from "/public/images/Clef-des-orges/2bouteille.png";
+import Clefdesorges2cannette from "/public/images/Clef-des-orges/2cannette.png";
+import Clefdesorges3cannette from "/public/images/Clef-des-orges/3cannette.png";
+// import Clefdesorges from "/public/images/Clef-des-orges/logo.svg";
+import Clefdesorgeslogoexplination from "/public/images/Clef-des-orges/logoexplination.png";
+
 export const projectList = [
   {
     date: 2025,
@@ -80,7 +89,7 @@ export const projectList = [
 "Web design, branding et développement d’un site vitrine pour une entreprise de construction.",
 "J’ai créé l’identité visuelle (logo, couleurs), avec une palette alliant un orange dynamique (#FFB53B) et un vert profond (#084527). Le site met en avant les services et projets dans une interface claire et responsive."
     ],
-    categorie: ["Web design", "Branding"],
+    categorie: ["web design", "Branding"],
   },
   {
     date: 2025,
@@ -189,8 +198,8 @@ export const projectList = [
 
     listImage: [
       { img: Dhoolfullsectionvideo },
-      { img: Dhoolfullwebsite },
-      // { img: Dhoolfullwebsite2 },
+      { img: Dhoolfullwebsite2 },
+      // { img: Dhoolfullwebsite },
       { img: Dhoolallframe },
     ],
     description: [
@@ -199,6 +208,30 @@ export const projectList = [
     ],
     categorie: ["Web design"],
   },
+//   {
+//     date: 2024,
+//     id: 7,
+//     backgroundColor: "#F8D559",
+//     textColor: "#A67449",
+//     title: "Clef des orges",
+//     name: "Clef des orges",
+//     logo: Dhoollogo,
+//     thumbnail: DhoolThumb,
+
+//     listImage: [
+//       { img: Clefdesorgessectionvideo },
+//       { img: Clefdesorge2bouteilles },
+//       { img: Clefdesorgeslogoexplination },
+//       { img: Clefdesorges2cannette },
+//       { img: Clefdesorges3cannette },
+
+//     ],
+//     description: [
+// "J’ai réalisé le web design complet du site de Dhool, une agence de branding et web design. ",
+// "Le fond noir profond et les dégradés de gris apportent élégance et subtilité, dans un style minimaliste et professionnel. La palette réduite met en valeur les contenus et les projets, pour une expérience sobre et impactante.",
+//     ],
+//     categorie: ["Branding"],
+//   },
   // {
   //   date:2024,
   //   id: 5,

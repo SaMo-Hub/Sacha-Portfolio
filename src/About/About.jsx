@@ -94,7 +94,7 @@ export const About = () => {
           <div className="flex flex-col gap-8">
             <h2 className="uppercase">(à propos)</h2>
             <div>
-              <div className="reveal-line md:w-[50%] lg:w-[250px] flex ">
+              <div className=" md:w-[50%] lg:w-[250px] flex ">
                 Je suis un designer de 20 ans passionné par le branding et le
                 web design. Fort de plusieurs années d'expériences, j'ai eu
                 l'opportunité de travailler sur divers projets qui m'ont permis

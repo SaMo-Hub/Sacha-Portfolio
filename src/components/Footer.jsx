@@ -1,10 +1,10 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { createRef } from "react";
+import { data, Link } from "react-router";
 
 export const Footer = ({ primaryColor }) => {
   const navLinks = [
     { label: "home", to: "/" },
-    { label: "about", to: "/about" },
+    { label: "à propos", to: "/about" },
     // { label: "portfolio", to: "/portfolio" },
   ];
 
@@ -25,9 +25,8 @@ export const Footer = ({ primaryColor }) => {
         </Link>
       </li>
     ));
-
   return (
-    <footer className="z-10 flex-wrap gap-12 mt-20 relative mx-8 md:mx-12 py-12 border-t flex justify-between font-supply items-end text-xs uppercase">
+    <footer className="z-10 flex-wrap gap-12 mt-20 relative mx-8 md:mx-12 py-12 border-t-2 flex justify-between font-supply items-end text-xs uppercase">
       <div className="flex flex-wrap items-end gap-12">
         <ul>{renderLinks(navLinks, 40)}</ul>
         <ul>{renderLinks(socialLinks, 70)}</ul>
