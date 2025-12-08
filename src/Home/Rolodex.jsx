@@ -142,7 +142,7 @@ export const Rolodex = ({ setbgColor, settextColor }) => {
   ))}
       </div> */}
 
-      <div ref={containerRef} className={`bg-amber w-full`}>
+      <div ref={containerRef} className={`bg-amber overflow-hidden w-full`}>
         <div
           ref={imageContainerRef}
           className={`absolute h-[300px] z-20 overflow-hidden pointer-events-none`}

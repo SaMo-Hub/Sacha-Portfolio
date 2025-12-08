@@ -103,6 +103,7 @@ export const PageProjet = () => {
               {item.date}
             </p>
           </div>
+        
         </div>
         {modalImage && (
           <div

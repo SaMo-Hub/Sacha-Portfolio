@@ -30,7 +30,7 @@ export const Header = () => {
     <div className="h-screen   px-12 flex flex-col justify-end bg-[#F9F9F9]">
       <div className="relative bottom-12">
         <div className="overflow-hidden">
-        <h2 ref={subtitlesRef} className="font-supply text-sm uppercase">(Sacha Moricet)</h2>
+        <h2 ref={subtitlesRef} className="font-supply text-sm uppercase">(Sordulo)</h2>
         </div>
 
         <div className="  flex justify-end flex-col  ">
@@ -42,7 +42,7 @@ Brand / web
             </p>
             </span>
             <span className="overflow-hidden">
-              <p className="bg-amber-00 h-[14vw] " ref={(el) => (titleRefs.current[1] = el)}>Designer</p>
+              <p className="bg-amber-00 h-[14vw] " ref={(el) => (titleRefs.current[1] = el)}>Agency</p>
             </span>
           </h1>
         </div>
