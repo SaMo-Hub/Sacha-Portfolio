@@ -2,14 +2,27 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import SplitType from "split-type";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "../hooks/reducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function TextReveal({delay}) {
   useEffect(() => {
+    // Animation neutralisée : le texte reste simplement en place.
+    if (prefersReducedMotion()) return;
+    let cancelled = false;
+
+    // Découpe après le chargement des fontes : des lignes calculées avec la police
+    // de repli se recassent une fois la mono chargée (« Maison de la / Culture… »).
+    const splitLines = () => {
+    if (cancelled) return;
     const elements = document.querySelectorAll(".reveal-line");
 
     elements.forEach((el) => {
+      // Déjà découpé (double montage du mode strict) : ne pas redécouper
+      if (el.dataset.revealSplit) return;
+      el.dataset.revealSplit = "true";
+
       // Sauvegarder le style original de l'élément
       const originalDisplay = el.style.display;
       const originalOverflow = el.style.overflow;
@@ -61,8 +74,12 @@ export default function TextReveal({delay}) {
       });
     });
 
+    };
+
+    document.fonts.ready.then(splitLines);
+
     return () => {
-      // Nettoyage éventuel
+      cancelled = true;
     };
   }, []);
 

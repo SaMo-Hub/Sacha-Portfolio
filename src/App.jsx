@@ -21,7 +21,7 @@ function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} /> {/* Home */}
             <Route path="/about" element={<About />} /> {/* Home */}
-            <Route path="/projets/:id" element={<PageProjet />} />
+            <Route path="/projets/:slug" element={<PageProjet />} />
           </Routes>
         </AnimatePresence>
             </LenisProvider>

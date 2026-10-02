@@ -1,298 +1,295 @@
 import React, { useEffect, useRef, useState } from "react";
-import { projectList } from "../projectList";
-import { Link, useParams } from "react-router";
-import { div } from "framer-motion/client";
-import { motion } from "framer-motion";
-import { Navbar } from "../components/Navbar";
-import MatterCubes from "../components/MatterCubes";
-import { Navbar2 } from "../components/Navbar2";
+import { Navigate, useParams } from "react-router";
 import gsap from "gsap";
+import { projectList, projectsBySlug } from "../projectList";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 import { Transition } from "../components/Transition";
 import RevealText from "../components/TextReveal";
-import { Footer } from "../components/Footer";
 import ScrollToTop from "../components/ScrollTop";
+import { ProjectPager } from "../components/ProjectPager";
+import { useFitText } from "../hooks/useFitText";
+import { prefersReducedMotion } from "../hooks/reducedMotion";
 
+// Route `/projets/:slug`. Un slug inconnu (dont les anciennes URL `/projets/1`…)
+// renvoie à la home plutôt que d'afficher une page vide.
 export const PageProjet = () => {
-  const { id } = useParams(); // Récupérer l'id de l'URL
-  const numericId = parseInt(id);
-  const [modalImage, setModalImage] = useState(null);
+  const { slug } = useParams();
+  const project = projectsBySlug[slug];
+  if (!project) return <Navigate to="/" replace />;
+  return <ProjectView key={slug} project={project} />;
+};
 
-  const item = projectList.find((p) => p.id === parseInt(id));
-  const nextProjectColors = projectList.find((p) => p.id === numericId + 1);
-  const prevProjectColors = projectList.find((p) => p.id === numericId - 1);
-  const [bgColor, setbgColor] = useState(item.backgroundColor);
-  const [textColor, settextColor] = useState(item.textColor);
-  console.log(nextProjectColors, "gg");
-  const list = ["ggg", "fff"];
-  const titleRef = useRef(null);
-  const dateRef = useRef(null);
-  const projetNumberRef = useRef(null);
-  useEffect(() => {
-    window;
-  });
+// Morceaux insécables d'un titre : les mots, et ce qui suit un trait d'union
+// (« Kuchisake-Onna » → « Kuchisake- » + « Onna »). Ce sont les endroits où le
+// navigateur a le droit de passer à la ligne.
+function chunksOf(title) {
+  return String(title)
+    .split(/\s+/)
+    .flatMap((word) => word.match(/[^-]*-|[^-]+/g) ?? [word]);
+}
 
+/**
+ * Titre display du hero, ajusté à la colonne que lui laissent le compteur et
+ * l'année.
+ *
+ * On ne mesure pas le titre entier mais son **morceau le plus large** : la taille
+ * est celle qui fait tenir ce morceau dans la colonne, et c'est ensuite le
+ * navigateur qui passe à la ligne si le titre complet ne tient pas. Un nom court
+ * reste sur une ligne ; un nom long (« Kuchisake-Onna ») passe sur deux lignes au
+ * lieu de rapetisser ou de déborder sur l'année.
+ *
+ * Le plafond est l'échelle du display du site, **14 vw** (DESIGN.md §2), appliqué
+ * en CSS par `min()` : il suit la fenêtre sans remesurer. Sous `sm`, le compteur et
+ * l'année passent sous le titre, qui a toute la largeur : plafond relevé à 24 vw.
+ */
+function StudyTitle({ children }) {
+  const [boxRef, probeRef, size] = useFitText({ fill: 1 });
+  const chunks = chunksOf(children);
+
+  return (
+    // `boxRef` ne porte aucun padding : sa largeur EST la place disponible.
+    <div ref={boxRef} className="relative w-full">
+      {/* Sonde de mesure, hors flux : sa largeur est celle du plus large morceau
+          (chaque morceau est un bloc insécable). */}
+      <span
+        ref={probeRef}
+        aria-hidden="true"
+        className="font-ztbroskon uppercase invisible absolute left-0 top-0 whitespace-nowrap"
+      >
+        {chunks.map((chunk, i) => (
+          <span key={`${chunk}-${i}`} className="block">
+            {chunk}
+          </span>
+        ))}
+      </span>
+
+      {/* Masque de révélation : le titre monte de sous la ligne */}
+      <div className="overflow-hidden">
+        <h1
+          data-hero-mask
+          className="font-ztbroskon uppercase [--title-cap:24vw] sm:[--title-cap:14vw]"
+          style={{
+            fontSize: size ? `min(${size}px, var(--title-cap))` : undefined,
+            lineHeight: 0.9,
+            visibility: size ? undefined : "hidden",
+          }}
+        >
+          {children}
+        </h1>
+      </div>
+    </div>
+  );
+}
+
+// Une section de la charte : une planche, ou plusieurs empilées.
+function SectionContent({ section }) {
+  const images = section.type === "images" ? section.images : [section.image];
+  return (
+    <div className="flex flex-col gap-4">
+      {images.map((src, i) => (
+        <img
+          key={src}
+          data-reveal-image
+          src={src}
+          alt={images.length > 1 ? `${section.title} ${i + 1}` : section.title}
+          loading="lazy"
+          className="h-auto w-full rounded-sm"
+        />
+      ))}
+    </div>
+  );
+}
+
+// Label mono masqué, monté avec le hero
+function HeroLabel({ children, className = "" }) {
+  return (
+    <div className={`overflow-hidden ${className}`}>
+      <p data-hero-mask className="font-supply text-xs uppercase">
+        {children}
+      </p>
+    </div>
+  );
+}
+
+function ProjectView({ project }) {
+  const { study, backgroundColor, textColor } = project;
+  const position = projectList.indexOf(project) + 1;
+  const counter = `(${position}/${projectList.length})`;
+  const pad = (n) => String(n).padStart(2, "0");
+
+  // Duo du rideau de transition (fond, texte) : l'encre du projet en fond, mis à
+  // jour au clic sur un lien pour prendre les couleurs de la page de destination.
+  const [bgColor, setbgColor] = useState(textColor);
+  const [curtainText, settextColor] = useState(backgroundColor);
+
+  const heroRef = useRef(null);
+  const sectionsRef = useRef(null);
+
+  // Entrée du hero : laisse le rideau se lever, puis titres et labels sortent
+  // de leur masque.
   useEffect(() => {
-    if (titleRef.current && dateRef.current) {
-      gsap.fromTo(
-        titleRef.current,
-        { y: 1000, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.3,
-          ease: "power4.out",
-          stagger: 0,
-          delay: 0.3,
-        }
-      );
-      gsap.fromTo(
-        [projetNumberRef.current, dateRef.current],
-        { y: 1000, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.3,
-          ease: "power4.out",
-          stagger: 0.2,
-          delay: 0.2,
-        }
-      );
-    }
-  }, [item]);
+    if (prefersReducedMotion()) return;
+    const targets = heroRef.current.querySelectorAll("[data-hero-mask]");
+    gsap.fromTo(
+      targets,
+      { yPercent: 100 },
+      { yPercent: 0, duration: 1.3, ease: "power4.out", stagger: 0.1, delay: 0.3 }
+    );
+  }, []);
+
+  // Planches : dévoilement par le bas au premier passage dans le viewport.
+  // IntersectionObserver plutôt que ScrollTrigger : les SVG chargés en lazy
+  // changent la hauteur de la page, ce qui fausserait des déclencheurs précalculés.
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    const images = sectionsRef.current.querySelectorAll("[data-reveal-image]");
+    gsap.set(images, { clipPath: "inset(100% 0% 0% 0%)" });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          gsap.to(entry.target, {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 1.2,
+            ease: "power4.inOut",
+          });
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px" }
+    );
+    images.forEach((img) => observer.observe(img));
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Sommaire : défilement doux vers la planche, instantané si l'utilisateur
+  // préfère réduire les animations.
+  const goToSection = (event, id) => {
+    event.preventDefault();
+    document.getElementById(id)?.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <div
-      className="custom-selection"
+      className="custom-selection min-h-screen"
       style={{
-        "--selection-bg": item.textColor,
-        "--selection-text": item.backgroundColor,
+        backgroundColor,
+        color: textColor,
+        "--selection-bg": textColor,
+        "--selection-text": backgroundColor,
       }}
     >
-      <Transition primaryColor={textColor} secondaryColor={bgColor} />
-      <RevealText /> {/* Initialise les animations au mount */}
+      <Transition primaryColor={bgColor} secondaryColor={curtainText} />
+      <RevealText />
       <ScrollToTop />
       <Navbar
         setbgColor={setbgColor}
         settextColor={settextColor}
-        primary={item.textColor}
-        secondary={item.backgroundColor}
+        primary={textColor}
+        secondary={backgroundColor}
       />
-      <div
-        style={{ backgroundColor: item.backgroundColor, color: item.textColor }}
-        className=""
+
+      {/* Hero — compteur · TITRE · année. Les deux mentions sont **dans le flux**
+          (même largeur minimale, pour que la colonne du titre reste centrée) et
+          non posées par-dessus : un nom long ne peut pas leur passer dessus.
+          `min-w-0` sur la colonne du titre est indispensable : sans lui, un
+          élément flex refuse de descendre sous sa largeur naturelle. */}
+      <header
+        ref={heroRef}
+        className="relative h-[100svh] px-8 md:px-12 flex flex-col justify-center"
       >
-        <div
-          style={{
-            backgroundColor: item.backgroundColor,
-            color: item.textColor,
-          }}
-          className="h-screen px-8 md:px-12  w-full flex justify-between items-center"
-        >
-          <div className="overflow-hidden">
-            <p ref={projetNumberRef} className="font-supply text-xs ">
-              ({item.id}/{projectList.length})
-            </p>
+        <div className="flex w-full items-center gap-6 md:gap-10">
+          <HeroLabel className="hidden sm:block min-w-[80px] shrink-0">{counter}</HeroLabel>
+          <div className="min-w-0 flex-1 text-center">
+            <StudyTitle>{study.title}</StudyTitle>
           </div>
-          <div className="bg-amber-5 h-[14.6vw] flex items-start justify-baseline   wf overflow-hidden">
-            <h1 ref={titleRef} className="text-[14vw]/[14vw]   font-ztbroskon ">
-              {item.title}
-            </h1>
-          </div>
-          <div className="overflow-hidden">
-            <p ref={dateRef} className="font-supply text-xs ">
-              {item.date}
-            </p>
-          </div>
-        
+          <HeroLabel className="hidden sm:block min-w-[80px] shrink-0 text-right">
+            {study.year}
+          </HeroLabel>
         </div>
-        {modalImage && (
-          <div
-            className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
-            onClick={() => setModalImage(null)}
-          >
-            <div
-              className="max-w-[90vw] r max-h-[90vh] overflow-scroll"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={modalImage}
-                alt="Image zoom"
-                className="w-full h-auto r"
-              />
-            </div>
-          </div>
-        )}
 
-        <div className="flex flex-col gap-12 md:grid  grid-cols-12  md:gap-0 relative px-8 md:px-12 ">
-          <div className="md:sticky  md:top-24 col-start-1 col-end-5 row-start-1 row-end-2 text-xs font-supply self-start">
-            <div>
-              <div className="uppercase flex flex-col gap-5">
-                <p className="reveal-line">(role)</p>
-                <div className="flex flex-col gap-">
-                  {item.categorie.map((cat, index) => (
-                    <p className="reveal-line" key={index}>
-                      /{cat}
-                    </p>
-                  ))}
-                </div>
-              </div>
-              <div className=" mt-12 flex flex-col gap-8">
-                {item.description.map((item, index) => (
-                  <p id={index} className="reveal-line ">
-                    {item}
-                  </p>
-                ))}
-              </div>
-            </div>
-            {item.link && (
-              <Link
-                to={item.link}
-                // target="_blank"
-                style={{
-                  backgroundColor: item.textColor,
-                  color: item.backgroundColor,
-                }}
-                className="bg-black group overflow-hidden flex flex-col items-center mt-4 text-xs w-fit uppercase  text-white rounded-sm p-2"
-              >
-                <div className="flex">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="size-4"
+        {/* En mobile, les mentions passent sous le titre */}
+        <div className="sm:hidden mt-6 flex justify-between">
+          <HeroLabel>{counter}</HeroLabel>
+          <HeroLabel>{study.year}</HeroLabel>
+        </div>
+
+        <div className="absolute inset-x-8 md:inset-x-12 bottom-8 md:bottom-12 flex justify-between">
+          <HeroLabel>[{study.status}]</HeroLabel>
+          <HeroLabel>/{study.category}</HeroLabel>
+        </div>
+      </header>
+
+      {/* Deux colonnes à partir de `lg` seulement : en tablette portrait, la colonne
+          des planches ne faisait que ~380 px. En dessous, texte puis planches. */}
+      <div className="px-8 md:px-12 flex flex-col gap-24 lg:grid lg:grid-cols-12 lg:gap-4">
+        {/* Colonne texte, collée pendant le défilement des planches */}
+        <aside className="lg:col-start-1 lg:col-end-5 lg:sticky lg:top-28 self-start font-supply text-xs flex flex-col gap-12">
+          <div className="uppercase flex flex-col gap-2">
+            <p className="reveal-line">(rôle)</p>
+            <p className="reveal-line">{`/${study.category}`}</p>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <p className="reveal-line uppercase">(contexte)</p>
+            <p className="reveal-line max-w-[46ch]">{study.context}</p>
+          </div>
+
+          <nav aria-label="Sommaire du projet" className="uppercase flex flex-col gap-2">
+            <p className="reveal-line">(sommaire)</p>
+            <ul>
+              {study.sections.map((section, i) => (
+                <li key={section.id}>
+                  <a
+                    href={`#${section.id}`}
+                    onClick={(event) => goToSection(event, section.id)}
+                    className="group relative inline-flex gap-3 py-2.5 lg:py-1"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
-                    />
-                  </svg>
-
-                  <p className="ml-2 reveal-line">site live</p>
-                </div>
-
-                <div className=" h-full w-full overflow-hidden">
-                  <div
-                    style={{ backgroundColor: item.backgroundColor }}
-                    className="h-[1.5px] -translate-x-[90px] duration-300  transition-all  group-hover:-translate-x-[0px]  w-full"
-                  ></div>
-                </div>
-              </Link>
-            )}
-            <div className="gap-2 uppercase flex mt-42">
-              <Link
-                onClick={() => {
-                  settextColor(prevProjectColors.textColor),
-                    setbgColor(prevProjectColors.backgroundColor);
-                }}
-                style={{ borderColor: item.textColor, color: item.textColor }}
-                className={`flex border relative items-center group overflow-hidden z-20 w-fit p-2 rounded-sm ${
-                  id <= 1 ? "hidden" : "block"
-                }  `}
-                to={`/projets/${parseInt(id) - 1}`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2.5}
-                  stroke="currentColor"
-                  className="size-3.5"
-                >
-                  <path
-                    strokeLinecap="square"
-                    strokeLinejoin="square"
-                    d="M15.75 19.5 8.25 12l7.5-7.5"
-                  />
-                </svg>
-                <p>
-                  {id <= 1
-                    ? ""
-                    : projectList.find((p) => p.id === parseInt(id - 1)).title}
-                </p>
-                <div
-                  style={{ backgroundColor: item.textColor }}
-                  className=" absolute  duration-300 transition-all  h-full translate-x-[140px]  w-full opacity-15 group-hover:-translate-x-[0px]  left-0 top-0"
-                ></div>
-              </Link>
-
-              <Link
-                onClick={() => {
-                  settextColor(nextProjectColors.textColor),
-                    setbgColor(nextProjectColors.backgroundColor);
-                }}
-                style={{ borderColor: item.textColor, color: item.textColor }}
-                className={`overflow-hidden group border flex items-center relative z-20 w-fit p-2 rounded-sm ${
-                  id >= projectList.length ? "hidden" : "block"
-                }  `}
-                to={`/projets/${parseInt(id) + 1}`}
-              >
-                <p>
-                  {id >= projectList.length
-                    ? ""
-                    : projectList.find((p) => p.id === parseInt(id) + 1).title}
-                </p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2.5}
-                  stroke="currentColor"
-                  className="size-3.5"
-                >
-                  <path
-                    strokeLinecap="square"
-                    strokeLinejoin="square"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-                <div
-                  style={{ backgroundColor: item.textColor }}
-                  className=" absolute duration-300   transition-all  h-full -translate-x-[140px]  w-full opacity-15 group-hover:-translate-x-[0px]  left-0 top-0"
-                ></div>
-              </Link>
-            </div>
-          </div>
-
-          {/* Partie scrollable à côté */}
-          <div className="col-start-6 col-end-13 row-start-1 row-end-2">
-            <div className="flex flex-col gap-4">
-              {item.listImage.map((image, imgIndex) => (
-                <div key={imgIndex}>
-                  {image.grid && (
-                    <div className={`${image.gridName} grid gap-4`}>
-                      {image.grid.map((gridImg, index) => (
-                        <img
-                          key={`grid-${imgIndex}-${index}`}
-                          src={gridImg}
-                          alt=""
-                        />
-                      ))}
-                    </div>
-                  )}
-
-                  {image.img && (
-                    <img
-                      key={`img-${imgIndex}`}
-                      className="w-full rounded-sm cursor-pointer"
-                      src={image.img}
-                      alt={`Illustration ${imgIndex + 1}`}
-                      onClick={() => setModalImage(image.img)}
-                    />
-                  )}
-                </div>
+                    <span className="opacity-60">{pad(i + 1)}</span>
+                    <span className="relative overflow-hidden">
+                      {section.title}
+                      <span className="absolute left-0 bottom-0 h-[1.5px] w-full bg-current -translate-x-full group-hover:translate-x-0 group-focus-visible:translate-x-0 transition-transform duration-500 motion-reduce:transition-none" />
+                    </span>
+                  </a>
+                </li>
               ))}
-            </div>
-          </div>
-        </div>
+            </ul>
+          </nav>
+        </aside>
 
-        <Footer
-          primaryColor={item.textColor}
-          secondaryColor={item.backgroundColor}
-        />
+        {/* Planches de la charte */}
+        <main
+          ref={sectionsRef}
+          className="lg:col-start-6 lg:col-end-13 flex flex-col gap-24 md:gap-32"
+        >
+          {study.sections.map((section, i) => (
+            <section key={section.id} id={section.id} className="scroll-mt-28">
+              <div className="flex justify-between font-supply text-xs uppercase pt-3 pb-6 relative">
+                <div className="h-[1.5px] w-full bg-current absolute top-0 left-0" />
+                <h2 className="reveal-line">{`(${section.title})`}</h2>
+                <p className="reveal-line">{`${pad(i + 1)}/${pad(study.sections.length)}`}</p>
+              </div>
+              <SectionContent section={section} />
+            </section>
+          ))}
+        </main>
       </div>
+
+      <ProjectPager
+        slug={project.slug}
+        onNavigate={(next) => {
+          setbgColor(next.textColor);
+          settextColor(next.backgroundColor);
+        }}
+      />
+
+      <Footer primaryColor={textColor} />
     </div>
   );
-};
+}

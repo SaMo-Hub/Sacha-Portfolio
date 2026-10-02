@@ -122,7 +122,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
               ? { color: modal ? bgColor : textColor }
               : { color: modal ? "white" : "" }
           }
-          className="font-supply text-xs  "
+          className="font-supply text-xs block py-3 -my-3"
           to={`/`}
         >
           <div 
@@ -135,7 +135,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
              
               className="uppercase transition-all"
             >
-              index{" "}
+              home
             </p>
             <div
               className=" group-hover:w-full pointer-events-none duration-500 transition-all w-0 bottom-0 h-[1.5px] absolute"
@@ -195,7 +195,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
               }
             : { color: "white" }
         }
-        className="bg-[#2D2D2D] absolute top-0 pt-24 flex flex-col justify-between w-full h-screen"
+        className="bg-[#2D2D2D] absolute top-0 pt-24 flex flex-col justify-between w-full h-[100dvh]"
       >
         <div className="flex justify-center h-full flex-col">
           {menuItems.map((item, i) => (
@@ -207,27 +207,27 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
                   settextColor("#fff");
                   setbgColor("#2D2D2D");
                 } else {
-                  settextColor("#4C76E3");
-                  setbgColor("#DBDDE2");
+                  settextColor("#E2FFC0");
+                  setbgColor("#1F8C0F");
                 }
               }}
               key={i}
               style={{ color: secondary }}
-              className="px-12 group py-2 flex md:flex-row  flex-col gap-2 justify-between relative items-center"
+              className="px-8 md:px-12 group py-2 flex lg:flex-row flex-col gap-2 justify-between relative items-center"
             >
               <div
                 className="font-ztbroskon relative group overflow-hidden group-hover:  z-10 uppercase"
               >
                 <h3
                   ref={(el) => (titleRefs.current[i] = el)}
-                  className={`group-hover:hidden text-[17vw]/[18vw] md:text-[190px]/[190px] h-[15vw] md:h-[180px]`}
+                  className={`group-hover:hidden text-[17vw]/[18vw] lg:text-[190px]/[190px] h-[18vw] lg:h-[190px]`}
                 >
                   {item.title}
                 </h3>
                 <h3
                   // style={{cl}}
                   style={{ color: primary }}
-                  className={`group-hover:block hidden text-[17vw]/[18vw] md:text-[190px]/[190px] h-[15vw] md:h-[180px]`}
+                  className={`group-hover:block hidden text-[17vw]/[18vw] lg:text-[190px]/[190px] h-[18vw] lg:h-[190px]`}
                 >
                   {item.title}
                 </h3>

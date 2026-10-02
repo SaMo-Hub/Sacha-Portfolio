@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from "framer-motion";
+import { profile } from "../profile";
 
 export const Transition = ({primaryColor, secondaryColor}) => {
   
@@ -26,7 +27,7 @@ export const Transition = ({primaryColor, secondaryColor}) => {
                 transition={{delay:0.35,duration: 0.4, ease: "easeInOut" }}
                 className="font-supply translate-y-0 uppercase text-xs"
               >
-                (agency)
+                (portfolio)
               </motion.h2>
             </div>
             <div className="overflow-hidden flex flex-col items-baseline  h-[10vw] ">
@@ -35,7 +36,7 @@ export const Transition = ({primaryColor, secondaryColor}) => {
                 transition={{ delay:0.25,duration: 0.5, ease:[0.9, 0, 0.1, 0.7]  }}
                 className="font-ztbroskon text-[12vw]/[12vw] uppercase h-fit "
               >
-                Sordulo
+                {profile.brand}
               </motion.h1>
             </div>
           </motion.div>
@@ -61,7 +62,7 @@ export const Transition = ({primaryColor, secondaryColor}) => {
                               exit={{ translateY: "0%" }}
                               transition={{delay:0.6, duration: 0.6,  ease:[0.9, 0, 0.1, 0.7]  }}
                                       className='font-supply translate-y-0 uppercase text-xs'>
-                                          (agency)
+                                          (portfolio)
                                       </motion.h2>
                                       </div>
                                       <div className='overflow-hidden flex flex-col items-baseline  h-[10vw] '>
@@ -73,7 +74,7 @@ export const Transition = ({primaryColor, secondaryColor}) => {
                               exit={{ translateY: "0%" }}
                               transition={{delay:0.4 ,duration: 0.6,  ease:[0.9, 0, 0.1, 0.7]  }}
                                       className='font-ztbroskon text-[12vw]/[12vw] uppercase h-fit '>
-                                          Sordulo
+                                          {profile.brand}
                                       </motion.h1>
                                       </div>
                       </motion.div>

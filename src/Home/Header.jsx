@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { profile } from "../profile";
 
 export const Header = () => {
   const titleRefs = useRef([]);
@@ -27,23 +28,25 @@ export const Header = () => {
   }, []);
 
   return (
-    <div className="h-screen   px-12 flex flex-col justify-end bg-[#F9F9F9]">
+    // 100svh : en mobile, la barre d'adresse ne recouvre plus le titre calé en bas.
+    <div className="h-[100svh] px-8 md:px-12 flex flex-col justify-end bg-[#F9F9F9]">
       <div className="relative bottom-12">
         <div className="overflow-hidden">
-        <h2 ref={subtitlesRef} className="font-supply text-sm uppercase">(Sordulo)</h2>
+        <h2 ref={subtitlesRef} className="font-supply text-sm uppercase">({profile.fullName})</h2>
         </div>
 
         <div className="  flex justify-end flex-col  ">
-          <h1 className="text-[17vw]/[16vw]   flex flex-col  font-ztbroskon uppercase  ">
+          {/* Sous `md`, le titre passe à 20 vw pour occuper la largeur de l'écran
+              (« Graphiste » n'en prenait que 80 % à 17 vw). */}
+          <h1 className="text-[20vw]/[19vw] md:text-[17vw]/[16vw] flex flex-col font-ztbroskon uppercase">
 
-            <span className="overflow-hidden">
-            <p ref={(el) => (titleRefs.current[0] = el)} className="bg-amber500 h-[14vw] overflow-hidden">
-Brand / web
-            </p>
-            </span>
-            <span className="overflow-hidden">
-              <p className="bg-amber-00 h-[14vw] " ref={(el) => (titleRefs.current[1] = el)}>Agency</p>
-            </span>
+            {profile.heroLines.map((line, i) => (
+              <span key={line} className="overflow-hidden">
+                <p ref={(el) => (titleRefs.current[i] = el)} className="h-[16.5vw] md:h-[14vw]">
+                  {line}
+                </p>
+              </span>
+            ))}
           </h1>
         </div>
       </div>

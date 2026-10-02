@@ -4,11 +4,8 @@ import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { Navbar2 } from "../components/Navbar2";
 import { Transition } from "../components/Transition";
-import { useRevealer } from "../components/useRevealer";
-import { GridProjet } from "./gridProjet";
+import { GridProjet } from "./GridProjet";
 import { Header } from "./Header";
-import { Rolodex } from "./Rolodex";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import CustomEase from "gsap/CustomEase";
 import React, { useEffect, useState } from "react";
@@ -43,8 +40,7 @@ function Home() {
 
       <Navbar setbgColor={setbgColor} settextColor={settextColor}  primary={'#2D2D2D'} secondary={"#F9F9F9"} />
       <Header />
-      <Rolodex  setbgColor={setbgColor} settextColor={settextColor}/> 
-      {/* <GridProjet /> */}
+      <GridProjet setbgColor={setbgColor} settextColor={settextColor} />
       <Footer primaryColor={"#2D2D2D"} secondaryColors={"#F9F9F9"}/>
     </div>
   );
