@@ -155,8 +155,13 @@ un peu plus serré que Figma lui-même (Chrome et `rsvg-convert` rendent pareil)
 - Couleurs de page en hex dans les composants (duos par page) : c'est la convention du
   site, les duos projet vivent dans `projectList.js`.
 - `.firebase/` (cache de déploiement) est versionné.
-- Favicon, icônes du manifest et image Open Graph (`public/logo.*`) sont encore le logo
-  Sordulo : à remplacer par une marque Gabriela.
+- Icônes : **`public/logo.svg`** (le « G » vert de Gabriela) est la source unique. Le
+  `favicon.ico` (16/32/48, pour Safari qui ignore le favicon SVG), `apple-touch-icon.png`
+  (180) et les icônes PWA `icon-192/512.png` et `icon-maskable-512.png` (G réduit à 72 %
+  pour la zone sûre Android) en sont **dérivés** : après une modification du logo, les
+  régénérer avec `rsvg-convert` (+ Pillow pour le `.ico`).
+- L'image Open Graph / Twitter pointe sur `logo.svg` : les réseaux sociaux n'acceptent
+  pas le SVG, il faudra une vraie image de partage en PNG/JPG (1200×630).
 - Vérification dans Chrome piloté : si l'onglet est en arrière-plan
   (`document.hidden`), GSAP, Framer et les IntersectionObserver sont gelés — le hero
   paraît vide et le rideau reste affiché. Ce n'est pas un bug du site.
