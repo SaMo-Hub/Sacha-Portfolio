@@ -155,6 +155,11 @@ un peu plus serré que Figma lui-même (Chrome et `rsvg-convert` rendent pareil)
 - Couleurs de page en hex dans les composants (duos par page) : c'est la convention du
   site, les duos projet vivent dans `projectList.js`.
 - `.firebase/` (cache de déploiement) est versionné.
+- Le site est **aussi** déployé sur Vercel (`https://gabriela-carneiro-theta.vercel.app`,
+  depuis GitHub). `vercel.json` réécrit toutes les routes vers `index.html` : sans lui,
+  `/about` et `/projets/<slug>` répondent 404 au chargement direct (pas de fallback SPA
+  par défaut sur Vercel). Les deux `google-site-verification` de `index.html` valident
+  la Search Console (Firebase et Vercel) : ne pas les retirer.
 - Icônes : **`public/logo.svg`** (le « G » vert de Gabriela) est la source unique. Le
   `favicon.ico` (16/32/48, pour Safari qui ignore le favicon SVG), `apple-touch-icon.png`
   (180) et les icônes PWA `icon-192/512.png` et `icon-maskable-512.png` (G réduit à 72 %
