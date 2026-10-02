@@ -13,7 +13,7 @@ idéale) : quand tu ajoutes un écran, il doit avoir l'air d'avoir toujours ét�
 
 **Éditorial, typographique, presque brutaliste — et très animé.**
 Deux voix typographiques qui ne se mélangent jamais (un display condensé gigantesque et
-une mono minuscule en capitales), deux couleurs par page, des filets fins, aucun
+une sans minuscule en capitales), deux couleurs par page, des filets fins, aucun
 ornement. Tout le « luxe » vient du mouvement : rideaux de transition, révélations par
 masque, soulignés qui glissent.
 
@@ -31,16 +31,14 @@ labels.
 | Classe Tailwind | Fichier réellement chargé | Rôle | Toujours |
 | --- | --- | --- | --- |
 | `font-ztbroskon` | `public/font/ZTBrosOskon90s-Regular.otf` | **Display** : titres, noms de projets, entrées du menu, mot du rideau (« Gabi ») | `uppercase`, taille en `vw`, interligne serré |
-| `font-supply` | `public/font/PPNeueMontrealMono-Medium.otf` | **Tout le reste** : labels, paragraphes, nav, boutons, footer, dates | `uppercase` (sauf paragraphes longs), `text-xs` |
+| `font-outfit` | `public/font/Outfit-Variable.woff2` (Outfit variable, graisse par défaut **500**) | **Tout le reste** : labels, paragraphes, nav, boutons, footer, dates | `uppercase` (sauf paragraphes longs), `text-xs` |
 
-> ⚠️ Piège de nommage : `font-supply` ne charge **pas** PP Supply Mono mais
-> **PP Neue Montreal Mono Medium** (voir `@font-face` dans `src/index.css`). Le fichier
-> `PP Supply Mono Light` est présent dans `public/font/` mais inutilisé. Ne pas « corriger »
-> en changeant la source sans le vouloir : ça changerait toute l'allure du site.
+> Outfit remplace l'ancienne mono (PP Neue Montreal Mono Medium, en Free Personal Use).
+> La graisse 500 est posée par `.font-outfit` dans `@layer base` (`src/index.css`) : en
+> Regular, le texte de 12 px paraissait maigre. Un utilitaire `font-*` la surcharge.
 >
-> `font-neue` est déclaré dans `@theme` mais **aucun `@font-face` ne le charge** : il
-> retombe sur la police système. Ne pas l'utiliser sans ajouter le `@font-face` (les
-> `.otf` Neue Montreal sont dans `public/font/`).
+> `font-neue` est déclaré dans `@theme` mais **aucun `@font-face` ne le charge** : ne pas
+> l'utiliser.
 
 ### Échelle
 
@@ -62,7 +60,7 @@ légèrement inférieure à l'interligne : c'est ce qui permet la révélation p
 
 ### Micro-typographie des labels (signature du site)
 
-Les labels mono suivent des conventions de ponctuation précises — les respecter :
+Les labels en Outfit suivent des conventions de ponctuation précises — les respecter :
 
 - **Parenthèses** pour un intitulé de section ou un surtitre : `(Gabriela Carneiro)`, `(à propos)`,
   `(expérience)`, `(role)`, `(portfolio)`, `(revenir à la page principale)`.
@@ -136,12 +134,27 @@ Toujours aux couleurs de la page via la classe `custom-selection` et deux variab
 - **Arrondis** : `rounded-sm` uniquement (boutons, images). Rien de plus rond.
 - **Pas de cartes-boîtes.** La seule grille de vignettes est celle des projets de la home
   (`GridProjet.jsx`), réduite à l'essentiel : l'image `rounded-sm`, puis **dessous** une
-  seule ligne mono `NOM DU PROJET` … `/DA — année`. Ni titre display, ni description, ni filet, ni fond.
+  seule ligne `NOM DU PROJET` … `/DA — année`. Ni titre display, ni description, ni filet, ni fond.
 - **Page projet** : hero `(n/total)` — TITRE — `année`, `[statut]` et `/catégorie` calés en
   bas ; chaque planche est précédée d'un filet et d'une ligne `(section)` … `01/05`.
 - Beaucoup de vide : laisser respirer, ne pas remplir l'espace autour du display.
 
 ---
+
+### Responsive
+
+- **Breakpoints utiles** : mobile < `md` (768), tablette `md`–`lg`, desktop ≥ `lg` (1024).
+  Les mises en page à colonnes (page projet, entrées du menu titre + sous-titre) ne
+  s'ouvrent qu'à **`lg`** : en tablette portrait, tout s'empile.
+- **Display plus grand en mobile** : hero de la home à `20vw` sous `md` (`17vw` au-delà),
+  titre de page projet plafonné à `24vw` sous `sm` (`14vw` au-delà).
+- **Hauteurs plein écran** en `100svh` (hero) / `100dvh` (menu) plutôt que `h-screen` :
+  la barre d'adresse mobile ne recouvre plus le bas.
+- **Zones tactiles** : sur écran tactile (`pointer-coarse:`), les petits liens en Outfit
+  reçoivent un padding vertical (~42 px de haut) ; au pointeur fin, rien ne change.
+- **Accents capitales dans un masque** : dans ZT Bros Oskon, l'accent de « À »/« É » monte
+  à 0,93 em, au-dessus de ce que l'interligne serré laisse dans la boîte — un masque
+  `overflow-hidden` le coupe. Lui réserver ~0,13 em en `pt` (voir le menu).
 
 ## 5. Motion — la partie la plus importante
 
@@ -198,18 +211,18 @@ indépendant de la taille du texte.
 | --- | --- | --- |
 | `Navbar` | `src/components/Navbar.jsx` | `index` à gauche, bouton `menu` (burger 2 barres) à droite, menu plein écran en display géant. Props : `primary` (encre), `secondary` (fond), `setbgColor`, `settextColor`. Ajouter une page = ajouter une entrée à `menuItems`. |
 | `Navbar2` | `src/components/Navbar2.jsx` | Ancienne version, **non utilisée**. Ne pas s'en servir. |
-| `Footer` | `src/components/Footer.jsx` | Liens nav + réseaux + email, mono xs, filet `border-t-2`, soulignés glissants. Prop `primaryColor`. |
+| `Footer` | `src/components/Footer.jsx` | Liens nav + réseaux + email, Outfit xs, filet `border-t-2`, soulignés glissants. Prop `primaryColor`. |
 | `Transition` | `src/components/Transition.jsx` | Rideau de page (voir §5). |
 | `TextReveal` | `src/components/TextReveal.jsx` | Active les `.reveal-line` de la page. |
 | `LenisProvider` | `src/components/LenisProvider.jsx` | Smooth scroll, déjà autour de toutes les routes. |
 | `GridProjet` | `src/Home/GridProjet.jsx` | Grille des projets de la home (voir §4). Props `setbgColor`, `settextColor`. |
 | `PageProjet` / `StudyTitle` | `src/ProjetPage/PageProjet.jsx` | Page projet ; `StudyTitle` ajuste le titre display à sa colonne (plafond 14 vw). |
-| `ProjectPager` | `src/components/ProjectPager.jsx` | Précédent / suivant en bas de page projet, boucle : chevron + nom du projet en mono, souligné qui glisse. Ni titre display ni filet. |
+| `ProjectPager` | `src/components/ProjectPager.jsx` | Précédent / suivant en bas de page projet, boucle : chevron + nom du projet en Outfit, souligné qui glisse. Ni titre display ni filet. |
 | `MatterCubes` | — | Expérimentation non montée. Ne pas réactiver sans demande. |
 
 ### Boutons
 
-Un seul gabarit : petit, mono, capitales, `rounded-sm p-2 text-xs uppercase font-supply`,
+Un seul gabarit : petit, capitales, `rounded-sm p-2 text-xs uppercase font-outfit`,
 icône Heroicons outline `size-4` (ou `size-3.5`, `strokeLinecap="square"` pour les
 flèches) à gauche avec `ml-2`.
 - **Plein** : fond = encre, texte = fond de page, + souligné glissant au hover.
@@ -220,7 +233,7 @@ flèches) à gauche avec `ml-2`.
 ## 7. Ton et contenu
 
 - Français, phrases courtes, sobres. Pas de superlatifs marketing.
-- Labels en mono capitales avec la ponctuation du §2.
+- Labels en Outfit capitales avec la ponctuation du §2.
 - Le site présente **Gabriela Carneiro** — hero « DA / Graphiste », rideau `(portfolio)`
   + `GABI`. Coordonnées : `gabriela.carneiro@outlook.fr` et son LinkedIn (pas de téléphone sur le site). Toutes ces
   valeurs vivent dans `src/profile.js`.
@@ -229,7 +242,7 @@ flèches) à gauche avec `ml-2`.
 
 ## 8. Checklist avant de livrer une UI
 
-- [ ] Seulement `font-ztbroskon` (énorme, capitales) et `font-supply` (`text-xs`, capitales).
+- [ ] Seulement `font-ztbroskon` (énorme, capitales) et `font-outfit` (`text-xs`, capitales).
 - [ ] Seulement le duo fond/encre de la page (+ opacités) ; sélection `custom-selection` réglée.
 - [ ] Marges `px-8 md:px-12`, filets `1.5px`, `rounded-sm` max, ni ombre ni dégradé.
 - [ ] L'élément entre en scène (masque / reveal-line / wipe) avec les courbes du §5, et
@@ -237,7 +250,8 @@ flèches) à gauche avec `ml-2`.
       `motion-reduce:`).
 - [ ] Les liens ont le souligné glissant, les boutons le remplissage glissant.
 - [ ] Nouvelle page : `<Transition>`, `<Navbar>`, `<Footer>`, entrée dans `menuItems`.
-- [ ] Vérifié à 375 px : le display en `vw` ne déborde pas, la grille passe en une colonne.
+- [ ] Vérifié à 375, 768 et 1024 px : le display en `vw` ne déborde pas, la grille passe
+      en une colonne.
 
 ---
 
@@ -245,12 +259,12 @@ flèches) à gauche avec `ml-2`.
 
 | Fonte | Licence | Source |
 | --- | --- | --- |
-| PP Neue Montreal / Neue Montreal Mono / Supply Mono (Pangram Pangram) | **Free Personal Use** — usage commercial non autorisé | fiches dans `~/Documents/KNOWLEDGE/ASSETS/FONTS/_FICHES/` |
+| Outfit | **OFL** — libre, usage commercial autorisé (`public/font/Outfit-OFL.txt`) | vault `ASSETS/FONTS/Outfit/` |
 | ZT Bros Oskon 90s | **Non vérifiée** — absente du vault KNOWLEDGE | — |
+| PP Neue Montreal, PP Supply Mono (`public/font/`, **non utilisées**) | **Free Personal Use** | fiches dans `~/Documents/KNOWLEDGE/ASSETS/FONTS/_FICHES/` |
 
-Elles conviennent à un portfolio personnel, mais **ne pas les copier vers un projet
-client** — et si ce site est réalisé pour Gabriela en tant que cliente, la licence Free
-Personal Use ne le couvre plus. Pour une autre typo, chercher d'abord dans le vault (voir `~/CLAUDE.md`) avant
+Reste à vérifier : la licence de **ZT Bros Oskon**, seule fonte affichée encore incertaine
+— bloquant si ce site est réalisé pour Gabriela en tant que cliente. Pour une autre typo, chercher d'abord dans le vault (voir `~/CLAUDE.md`) avant
 tout téléchargement.
 
 ---

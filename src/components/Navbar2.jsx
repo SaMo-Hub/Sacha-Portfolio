@@ -99,7 +99,7 @@ export const Navbar2 = ({ item }) => {
             color: modal ? textColor : textColor,
           } : {  backgroundColor: "white",
             color: "#2D2D2D"}}
-          className="group cursor-pointer gap-2 justify-center items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-supply text-xs"
+          className="group cursor-pointer gap-2 justify-center items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-outfit text-xs"
         
           to={`/`}
         >
@@ -118,7 +118,7 @@ export const Navbar2 = ({ item }) => {
             color: modal ? textColor : textColor,
           } : {  backgroundColor: "white",
             color: "#2D2D2D"}}
-          className="group cursor-pointer gap-2 items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-supply text-xs"
+          className="group cursor-pointer gap-2 items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-outfit text-xs"
         >
           <div className="w-6 h-6 relative z-10 flex flex-col justify-center items-center gap-[6px]">
             <div
@@ -174,7 +174,7 @@ export const Navbar2 = ({ item }) => {
               <div className="h-fit z-10 overflow-hidden">
                 <p
                   ref={(el) => (subtitleRefs.current[i] = el)}
-                  className="font-supply text-center z-10 group-hover: text-white text-xs uppercase"
+                  className="font-outfit text-center z-10 group-hover: text-white text-xs uppercase"
                 >
                   ({item.subtitle})
                 </p>

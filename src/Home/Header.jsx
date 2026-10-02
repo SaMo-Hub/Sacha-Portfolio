@@ -32,7 +32,7 @@ export const Header = () => {
     <div className="h-[100svh] px-8 md:px-12 flex flex-col justify-end bg-[#F9F9F9]">
       <div className="relative bottom-12">
         <div className="overflow-hidden">
-        <h2 ref={subtitlesRef} className="font-supply text-sm uppercase">({profile.fullName})</h2>
+        <h2 ref={subtitlesRef} className="font-outfit text-sm uppercase">({profile.fullName})</h2>
         </div>
 
         <div className="  flex justify-end flex-col  ">

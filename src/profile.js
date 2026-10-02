@@ -16,7 +16,7 @@ export const profile = {
 
 export const resume = {
   // Texte du CV d'origine — ne pas inventer de bio à la place de Gabriela
-  intro: ["En recherche active d'une alternance, pour septembre 2026."],
+  intro: ["En recherche d'alternance dès maintenant."],
   interests: ["dessin", "graphisme", "cuisine", "musique"],
   experiences: [
     { company: "Le Studio", role: "Alternance Community Manager", period: "2025 - 2026" },

@@ -55,7 +55,7 @@ export const GridProjet = ({ setbgColor, settextColor }) => {
     <section
       ref={sectionRef}
       id="projets"
-      className="px-8 md:px-12 pt-24 md:pt-32 font-supply text-xs"
+      className="px-8 md:px-12 pt-24 md:pt-32 font-outfit text-xs"
     >
       <div className="flex justify-between uppercase mb-6">
         <div className="overflow-hidden">

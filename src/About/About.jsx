@@ -66,7 +66,7 @@ export const About = () => {
         secondary={secondaryColor}
       />
 
-      <div className="gap-32 lg:gap-12 pt-32 flex lg:flex-row flex-col md:justify-between font-supply text-xs px-8 md:px-12 h-full">
+      <div className="gap-32 lg:gap-12 pt-32 flex lg:flex-row flex-col md:justify-between font-outfit text-xs px-8 md:px-12 h-full">
         <div className="flex lg:sticky top-24 self-start flex-col gap-16">
           <div className="flex flex-col gap-8">
             <h2 className="reveal-line uppercase">(à propos)</h2>

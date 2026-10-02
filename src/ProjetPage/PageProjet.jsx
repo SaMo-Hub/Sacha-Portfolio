@@ -105,7 +105,7 @@ function SectionContent({ section }) {
 function HeroLabel({ children, className = "" }) {
   return (
     <div className={`overflow-hidden ${className}`}>
-      <p data-hero-mask className="font-supply text-xs uppercase">
+      <p data-hero-mask className="font-outfit text-xs uppercase">
         {children}
       </p>
     </div>
@@ -230,7 +230,7 @@ function ProjectView({ project }) {
           des planches ne faisait que ~380 px. En dessous, texte puis planches. */}
       <div className="px-8 md:px-12 flex flex-col gap-24 lg:grid lg:grid-cols-12 lg:gap-4">
         {/* Colonne texte, collée pendant le défilement des planches */}
-        <aside className="lg:col-start-1 lg:col-end-5 lg:sticky lg:top-28 self-start font-supply text-xs flex flex-col gap-12">
+        <aside className="lg:col-start-1 lg:col-end-5 lg:sticky lg:top-28 self-start font-outfit text-xs flex flex-col gap-12">
           <div className="uppercase flex flex-col gap-2">
             <p className="reveal-line">(rôle)</p>
             <p className="reveal-line">{`/${study.category}`}</p>
@@ -249,7 +249,7 @@ function ProjectView({ project }) {
                   <a
                     href={`#${section.id}`}
                     onClick={(event) => goToSection(event, section.id)}
-                    className="group relative inline-flex gap-3 py-2.5 lg:py-1"
+                    className="group relative inline-flex gap-3 py-1 pointer-coarse:py-2.5"
                   >
                     <span className="opacity-60">{pad(i + 1)}</span>
                     <span className="relative overflow-hidden">
@@ -270,7 +270,7 @@ function ProjectView({ project }) {
         >
           {study.sections.map((section, i) => (
             <section key={section.id} id={section.id} className="scroll-mt-28">
-              <div className="flex justify-between font-supply text-xs uppercase pt-3 pb-6 relative">
+              <div className="flex justify-between font-outfit text-xs uppercase pt-3 pb-6 relative">
                 <div className="h-[1.5px] w-full bg-current absolute top-0 left-0" />
                 <h2 className="reveal-line">{`(${section.title})`}</h2>
                 <p className="reveal-line">{`${pad(i + 1)}/${pad(study.sections.length)}`}</p>

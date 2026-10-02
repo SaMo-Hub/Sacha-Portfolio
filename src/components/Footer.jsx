@@ -4,7 +4,7 @@ import { profile } from "../profile";
 
 // Pied de page : navigation + coordonnées, mono xs, filet `border-t-2`.
 // Chaque lien a le souligné qui glisse, de la couleur d'encre (`primaryColor`).
-// Sous `lg` (écrans tactiles), `py-3` porte la zone tactile à ~42 px.
+// Sur écran tactile (`pointer-coarse`), `py-3` porte la zone tactile à ~42 px.
 export const Footer = ({ primaryColor }) => {
   const navLinks = [
     { label: "home", to: "/" },
@@ -23,12 +23,12 @@ export const Footer = ({ primaryColor }) => {
   );
 
   return (
-    <footer className="z-10 flex-wrap gap-12 mt-20 relative mx-8 md:mx-12 py-12 border-t-2 flex justify-between font-supply items-end text-xs uppercase">
+    <footer className="z-10 flex-wrap gap-12 mt-20 relative mx-8 md:mx-12 py-12 border-t-2 flex justify-between font-outfit items-end text-xs uppercase">
       <div className="flex flex-wrap items-end gap-12">
         <ul>
           {navLinks.map((link) => (
             <li key={link.to} className="relative w-fit group overflow-hidden">
-              <Link to={link.to} className="block py-3 lg:py-0">
+              <Link to={link.to} className="block pointer-coarse:py-3">
                 <p>{link.label}</p>
                 {underline}
               </Link>
@@ -38,7 +38,7 @@ export const Footer = ({ primaryColor }) => {
         <ul>
           {socialLinks.map((link) => (
             <li key={link.href} className="relative w-fit group overflow-hidden">
-              <a href={link.href} target="_blank" rel="noopener noreferrer" className="block py-3 lg:py-0">
+              <a href={link.href} target="_blank" rel="noopener noreferrer" className="block pointer-coarse:py-3">
                 <p>{link.label}</p>
                 {underline}
               </a>
@@ -47,7 +47,7 @@ export const Footer = ({ primaryColor }) => {
         </ul>
       </div>
 
-      <a className="relative group overflow-hidden block py-3 lg:py-0" href={`mailto:${profile.email}`}>
+      <a className="relative group overflow-hidden block pointer-coarse:py-3" href={`mailto:${profile.email}`}>
         <p>{profile.email}</p>
         {underline}
       </a>

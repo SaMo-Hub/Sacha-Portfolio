@@ -27,7 +27,7 @@ export const ProjectPager = ({ slug, onNavigate }) => {
   return (
     <nav
       aria-label="Autres projets"
-      className="mt-32 md:mt-44 px-8 md:px-12 flex justify-between gap-6 font-supply text-xs uppercase"
+      className="mt-32 md:mt-44 px-8 md:px-12 flex justify-between gap-6 font-outfit text-xs uppercase"
     >
       <PagerLink project={previous} label="Projet précédent" onNavigate={onNavigate} />
       <PagerLink project={next} label="Projet suivant" isNext onNavigate={onNavigate} />

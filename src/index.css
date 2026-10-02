@@ -4,16 +4,20 @@
   font-family: ZtBrosOskon;
   src: url('../public/font/ZTBrosOskon90s-Regular.otf');
 }
+/* Outfit (OFL, libre en commercial) — fonte de tout le texte hors display.
+   Version variable : un seul fichier pour toutes les graisses. */
 @font-face {
-  font-family: Supply;
-  src: url('../public/font/PPNeueMontrealMono-Medium.otf');
+  font-family: Outfit;
+  src: url('../public/font/Outfit-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
 }
 
 
 
 @theme {
   --font-ztbroskon: "ZtBrosOskon", sans-serif; 
-  --font-supply: "Supply", sans-serif; 
+  --font-outfit: "Outfit", sans-serif;
   --font-neue: "Neue Montreal", sans-serif; 
   --color-primary:#E72E00;
   --color-secondary:#FEF8F2;
@@ -30,7 +34,15 @@
   --spacing-smalltext-bottom : 20px
 }
 
-html 
+/* Graisse par défaut d'Outfit : Medium, la densité de l'ancienne mono à 12 px
+   (en Regular, le texte courant paraissait maigre). En `base`, un utilitaire
+   `font-light`/`font-bold` reste prioritaire. */
+@layer base {
+  .font-outfit {
+    font-weight: 500;
+  }
+}
+
 .custom-selection::selection {
   background-color: var(--selection-bg);
   color: var(--selection-text);

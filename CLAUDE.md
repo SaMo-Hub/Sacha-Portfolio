@@ -70,24 +70,26 @@ public/font/                # fontes .otf/.ttf
 ### Composants projet
 
 - `Home/GridProjet.jsx` — grille `md:grid-cols-3`, chaque carte est **un seul lien** :
-  l'image, puis nom du projet / catégorie — année en mono dessous (pas de titre display,
+  l'image, puis nom du projet / catégorie — année en Outfit dessous (pas de titre display,
   de description ni de filet). Entrée au premier passage
   dans le viewport (IntersectionObserver) : image dévoilée par `clip-path`, labels sortis
   de leur masque.
 - `ProjetPage/PageProjet.jsx` — slug inconnu (dont les anciennes URL `/projets/1`) →
-  `<Navigate to="/">`. Hero `(n/total) · TITRE · année`, puis grille 12 colonnes : colonne
+  `<Navigate to="/">`. Hero `(n/total) · TITRE · année`, puis (à partir de `lg` seulement,
+  empilé en dessous) grille 12 colonnes : colonne
   texte collée (rôle, contexte, **sommaire** cliquable des planches) et colonne planches
-  (label mono `(section)` + `01/05` sous un filet). Points délicats, à ne pas casser :
+  (label `(section)` + `01/05` sous un filet). Points délicats, à ne pas casser :
   - le compteur et l'année sont **dans le flux** (`min-w-[80px]` chacun, même largeur
     pour garder le titre centré), pas posés par-dessus ; sous `sm` ils passent sous le
     titre. **`min-w-0` sur la colonne du titre est indispensable** (un élément flex refuse
     sinon de descendre sous sa largeur naturelle) ;
   - `StudyTitle` mesure le **morceau insécable le plus large** (« Kuchisake- », « Onna »)
     via une sonde hors flux, et c'est le navigateur qui passe à la ligne. Le plafond est
-    l'échelle display du site, appliqué en CSS : `font-size: min(<fit>px, 14vw)` ;
+    l'échelle display du site, appliqué en CSS : `font-size: min(<fit>px, var(--title-cap))`
+    avec `--title-cap` à 24vw sous `sm`, 14vw au-delà ;
   - les planches se dévoilent via IntersectionObserver, pas ScrollTrigger : les SVG
     chargés en lazy changent la hauteur de la page après coup.
-- `components/ProjectPager.jsx` — précédent / suivant, la liste **boucle**. Deux liens mono
+- `components/ProjectPager.jsx` — précédent / suivant, la liste **boucle**. Deux liens en Outfit
   (chevron + nom du projet, souligné qui glisse), sans titre display ni filet ; le sens
   n'étant plus écrit, il est porté par l'`aria-label` (« Projet suivant : Kook »).
 - `hooks/useFitText.js` — ajuste un texte d'une ligne à la largeur de son conteneur. La
@@ -144,8 +146,10 @@ un peu plus serré que Figma lui-même (Chrome et `rsvg-convert` rendent pareil)
 
 ## Pièges connus
 
-- `font-supply` charge en réalité PP Neue Montreal Mono, et `font-neue` n'a pas de
-  `@font-face` (détails dans `DESIGN.md`).
+- Le texte courant est en **Outfit** (`font-outfit`, variable, auto-hébergée depuis le
+  vault, OFL) avec une graisse par défaut de 500 posée en `@layer base`. `font-neue` n'a
+  pas de `@font-face`. Les `.otf` Neue Montreal / Supply Mono de `public/font/` sont
+  inutilisés (et en Free Personal Use).
 - `Navbar2`, `MatterCubes`, `useRevealer` (appelle `useGSAP` non importé) ne sont pas
   utilisés.
 - Couleurs de page en hex dans les composants (duos par page) : c'est la convention du

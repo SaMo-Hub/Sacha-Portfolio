@@ -25,7 +25,7 @@ export const Transition = ({primaryColor, secondaryColor}) => {
               <motion.h2
                 animate={{ translateY: "100%" }}
                 transition={{delay:0.35,duration: 0.4, ease: "easeInOut" }}
-                className="font-supply translate-y-0 uppercase text-xs"
+                className="font-outfit translate-y-0 uppercase text-xs"
               >
                 (portfolio)
               </motion.h2>
@@ -61,7 +61,7 @@ export const Transition = ({primaryColor, secondaryColor}) => {
                             initial={{translateY: "0%"}}
                               exit={{ translateY: "0%" }}
                               transition={{delay:0.6, duration: 0.6,  ease:[0.9, 0, 0.1, 0.7]  }}
-                                      className='font-supply translate-y-0 uppercase text-xs'>
+                                      className='font-outfit translate-y-0 uppercase text-xs'>
                                           (portfolio)
                                       </motion.h2>
                                       </div>

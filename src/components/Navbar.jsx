@@ -122,7 +122,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
               ? { color: modal ? bgColor : textColor }
               : { color: modal ? "white" : "" }
           }
-          className="font-supply text-xs block py-3 -my-3"
+          className="font-outfit text-xs block py-3 -my-3"
           to={`/`}
         >
           <div 
@@ -156,7 +156,7 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
                 }
               : { backgroundColor: "white", color: modal ? textColor : bgColor }
           }
-          className="group cursor-pointer gap-2 items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-supply text-xs"
+          className="group cursor-pointer gap-2 items-center p-2 flex overflow-hidden relative rounded-sm uppercase font-outfit text-xs"
         >
           <div className="w-6 h-6 relative z-10 flex flex-col justify-center items-center gap-[6px]">
             {/* Barre 1 */}
@@ -215,19 +215,22 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
               style={{ color: secondary }}
               className="px-8 md:px-12 group py-2 flex lg:flex-row flex-col gap-2 justify-between relative items-center"
             >
+              {/* Masque de révélation. L'accent du « À » monte à 0,93 em au-dessus de
+                  la ligne de base, plus haut que ce que l'interligne serré laisse
+                  dans la boîte : le `pt` (~0,13 em) lui réserve la place. */}
               <div
-                className="font-ztbroskon relative group overflow-hidden group-hover:  z-10 uppercase"
+                className="font-ztbroskon relative group overflow-hidden z-10 uppercase"
               >
                 <h3
                   ref={(el) => (titleRefs.current[i] = el)}
-                  className={`group-hover:hidden text-[17vw]/[18vw] lg:text-[190px]/[190px] h-[18vw] lg:h-[190px]`}
+                  className={`group-hover:hidden text-[17vw]/[18vw] lg:text-[190px]/[190px] pt-[2.2vw] h-[20.2vw] lg:pt-[25px] lg:h-[215px]`}
                 >
                   {item.title}
                 </h3>
                 <h3
                   // style={{cl}}
                   style={{ color: primary }}
-                  className={`group-hover:block hidden text-[17vw]/[18vw] lg:text-[190px]/[190px] h-[18vw] lg:h-[190px]`}
+                  className={`group-hover:block hidden text-[17vw]/[18vw] lg:text-[190px]/[190px] pt-[2.2vw] h-[20.2vw] lg:pt-[25px] lg:h-[215px]`}
                 >
                   {item.title}
                 </h3>
@@ -246,11 +249,11 @@ export const Navbar = ({ setbgColor, settextColor, primary, secondary }) => {
                 >
                   <p
                     style={{ color: primary }}
-                    className="font-supply group-hover:block hidden  z-10 group-hover:  text-xs uppercase"
+                    className="font-outfit group-hover:block hidden  z-10 group-hover:  text-xs uppercase"
                   >
                     ({item.subtitle})
                   </p>
-                  <p className="font-supply group-hover:hidden  z-10 group-hover:  text-xs uppercase">
+                  <p className="font-outfit group-hover:hidden  z-10 group-hover:  text-xs uppercase">
                     ({item.subtitle})
                   </p>
                 </div>
