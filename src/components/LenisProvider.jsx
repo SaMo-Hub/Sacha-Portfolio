@@ -1,6 +1,11 @@
 // src/components/LenisProvider.jsx
-import { useEffect, useRef } from 'react'
+import { createContext, useContext, useEffect, useRef } from 'react'
 import Lenis from '@studio-freight/lenis'
+
+const LenisContext = createContext(null)
+
+// Ref vers l'instance Lenis (null avant le montage)
+export const useLenis = () => useContext(LenisContext)
 
 export const LenisProvider = ({ children }) => {
   const lenisRef = useRef(null)
@@ -12,19 +17,26 @@ export const LenisProvider = ({ children }) => {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easing custom
     })
 
+    let frame
     const raf = (time) => {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      frame = requestAnimationFrame(raf)
     }
 
-    requestAnimationFrame(raf)
+    frame = requestAnimationFrame(raf)
 
     lenisRef.current = lenis
 
     return () => {
+      cancelAnimationFrame(frame)
       lenis.destroy()
+      lenisRef.current = null
     }
   }, [])
 
-  return <div id="scroll-container">{children}</div>
+  return (
+    <LenisContext.Provider value={lenisRef}>
+      <div id="scroll-container">{children}</div>
+    </LenisContext.Provider>
+  )
 }

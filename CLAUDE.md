@@ -92,6 +92,11 @@ public/font/                # fontes .otf/.ttf
 - `components/ProjectPager.jsx` — précédent / suivant, la liste **boucle**. Deux liens en Outfit
   (chevron + nom du projet, souligné qui glisse), sans titre display ni filet ; le sens
   n'étant plus écrit, il est porté par l'`aria-label` (« Projet suivant : Kook »).
+- **Retour en haut à chaque changement de page** : `App.jsx` remonte dans
+  `AnimatePresence onExitComplete`, quand le rideau couvre tout l'écran (le saut ne se voit
+  pas). On passe par l'instance Lenis (`useLenis()` de `components/LenisProvider.jsx`, avec
+  `scrollTo(0, { immediate: true, force: true })`) : un `window.scrollTo` seul laisse Lenis
+  sur son ancienne cible. `history.scrollRestoration = "manual"` (retour/avant aussi en haut).
 - `hooks/useFitText.js` — ajuste un texte d'une ligne à la largeur de son conteneur. La
   boîte mesurée (`boxRef`) ne porte **aucun padding** (`clientWidth` l'inclut) ; le texte
   mesuré est `whitespace-nowrap`.
